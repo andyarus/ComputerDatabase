@@ -13,7 +13,7 @@ struct Computer {
   let name: String
   let introduced: String?
   let discounted: String?
-  let imageUrl: String?
+  let imageUrl: URL?
   let company: Company?
   let description: String?
 }

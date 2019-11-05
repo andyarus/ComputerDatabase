@@ -11,6 +11,7 @@ import UIKit
 class ComputersViewController: UIViewController {
   
   // MARK: - Properties
+  
   var computers: [ComputerItem] = []
   
   // MARK: - Outlets
@@ -20,13 +21,15 @@ class ComputersViewController: UIViewController {
   @IBOutlet weak var nextButton: UIButton!
   @IBOutlet weak var currentPageLabel: UILabel!
   
+  // MARK: - View Lifecycle
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     
     load()
   }
   
-  // MARK: - Load Methods
+  // MARK: - Load Method
   
   func load() {
     var item = ComputerItem(id: 1, name: "1", company: Company(id: 1, name: "company1"))
@@ -47,6 +50,8 @@ class ComputersViewController: UIViewController {
   
 }
 
+// MARK: - UITableViewDataSource
+
 extension ComputersViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -64,6 +69,24 @@ extension ComputersViewController: UITableViewDataSource {
     cell.discontinuedViewHeightConstraint.constant = 0
     
     return cell
+  }
+  
+}
+
+// MARK: - UITableViewDelegate
+
+extension ComputersViewController: UITableViewDelegate {
+  
+  func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    let sb = UIStoryboard.init(name: "Main", bundle: nil)
+    guard let vc = sb.instantiateViewController(withIdentifier: "ComputerViewController") as? ComputerViewController else { return }
+    
+    let computerItem = computers[indexPath.row]
+    
+    let computer = Computer(id: computerItem.id, name: computerItem.name, introduced: "introduced", discounted: "discounted", imageUrl: URL(string: "https://www.bhphotovideo.com/images/images1000x1000/lenovo_20ev002fus_15_6_thinkpad_e560_notebook_1219634.jpg")!, company: Company(id: 1, name: "name"), description: "description?")
+    
+    vc.computer = computer
+    navigationController?.pushViewController(vc, animated: true)
   }
   
 }
