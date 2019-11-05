@@ -16,6 +16,11 @@
 		9291FE812371CEE200963121 /* ComputerDatabaseUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE802371CEE200963121 /* ComputerDatabaseUITests.swift */; };
 		9291FE972371D31400963121 /* ComputersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE962371D31400963121 /* ComputersViewController.swift */; };
 		9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE982371D31E00963121 /* ComputerViewController.swift */; };
+		9291FE9C2371EC9400963121 /* ComputerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE9B2371EC9400963121 /* ComputerCell.swift */; };
+		9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE9D2371F5FE00963121 /* ComputerItem.swift */; };
+		9291FEA02371F65600963121 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE9F2371F65600963121 /* Company.swift */; };
+		9291FEA22371F67F00963121 /* Computer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA12371F67F00963121 /* Computer.swift */; };
+		9291FEA42371F74F00963121 /* SimilarComputerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA32371F74F00963121 /* SimilarComputerItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +56,11 @@
 		9291FE822371CEE200963121 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9291FE962371D31400963121 /* ComputersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputersViewController.swift; sourceTree = "<group>"; };
 		9291FE982371D31E00963121 /* ComputerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerViewController.swift; sourceTree = "<group>"; };
+		9291FE9B2371EC9400963121 /* ComputerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerCell.swift; sourceTree = "<group>"; };
+		9291FE9D2371F5FE00963121 /* ComputerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItem.swift; sourceTree = "<group>"; };
+		9291FE9F2371F65600963121 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
+		9291FEA12371F67F00963121 /* Computer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computer.swift; sourceTree = "<group>"; };
+		9291FEA32371F74F00963121 /* SimilarComputerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarComputerItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -109,6 +119,7 @@
 				9291FE922371D14E00963121 /* Services */,
 				9291FE932371D15B00963121 /* Storyboards */,
 				9291FE942371D16300963121 /* View Controllers */,
+				9291FE9A2371EC7000963121 /* Views */,
 			);
 			path = ComputerDatabase;
 			sourceTree = "<group>";
@@ -157,6 +168,10 @@
 		9291FE912371D14500963121 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9291FE9F2371F65600963121 /* Company.swift */,
+				9291FEA12371F67F00963121 /* Computer.swift */,
+				9291FE9D2371F5FE00963121 /* ComputerItem.swift */,
+				9291FEA32371F74F00963121 /* SimilarComputerItem.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -193,6 +208,14 @@
 				9291FE672371CEE200963121 /* Assets.xcassets */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		9291FE9A2371EC7000963121 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9291FE9B2371EC9400963121 /* ComputerCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -326,10 +349,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9291FEA22371F67F00963121 /* Computer.swift in Sources */,
 				9291FE972371D31400963121 /* ComputersViewController.swift in Sources */,
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
+				9291FEA42371F74F00963121 /* SimilarComputerItem.swift in Sources */,
+				9291FE9C2371EC9400963121 /* ComputerCell.swift in Sources */,
+				9291FEA02371F65600963121 /* Company.swift in Sources */,
 				9291FE662371CEE100963121 /* ComputerDatabase.xcdatamodeld in Sources */,
+				9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
