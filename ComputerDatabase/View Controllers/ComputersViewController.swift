@@ -32,20 +32,28 @@ class ComputersViewController: UIViewController {
   // MARK: - Load Method
   
   func load() {
-    var item = ComputerItem(id: 1, name: "1", company: Company(id: 1, name: "company1"))
-    computers.append(item)
+    let networkService = NetworkService()
     
-    item = ComputerItem(id: 2, name: "2", company: Company(id: 1, name: "company2"))
-    computers.append(item)
-    
-    item = ComputerItem(id: 3, name: "3", company: Company(id: 1, name: ""))
-    computers.append(item)
-    
-    item = ComputerItem(id: 4, name: "4", company: Company(id: 1, name: "company4"))
-    computers.append(item)
-    
-    item = ComputerItem(id: 5, name: "5", company: Company(id: 1, name: "company5"))
-    computers.append(item)
+    let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers?p=0")!
+    let request = URLRequest(url: url)
+    networkService.fetchData(with: request) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let computerItemsPage = try JSONDecoder().decode(ComputerItemsPage.self, from: data)
+          self.computers = computerItemsPage.items
+          
+          DispatchQueue.main.async {
+            self.computersTableView.reloadData()
+          }
+        } catch {
+          print("JSON error: \(error.localizedDescription)")
+        }
+      case .failure(let error):
+        // TODO show alert
+        print(error)
+      }
+    }
   }
   
 }
@@ -83,7 +91,7 @@ extension ComputersViewController: UITableViewDelegate {
     
     let computerItem = computers[indexPath.row]
     
-    let computer = Computer(id: computerItem.id, name: computerItem.name, introduced: "introduced", discounted: "discounted", imageUrl: URL(string: "https://www.bhphotovideo.com/images/images1000x1000/lenovo_20ev002fus_15_6_thinkpad_e560_notebook_1219634.jpg")!, company: Company(id: 1, name: "name"), description: "description?")
+    let computer = Computer(id: computerItem.id, name: computerItem.name, introduced: nil, discounted: nil, imageUrl: nil, company: nil, description: nil, similarItems: nil)
     
     vc.computer = computer
     navigationController?.pushViewController(vc, animated: true)

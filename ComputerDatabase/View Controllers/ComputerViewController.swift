@@ -12,7 +12,12 @@ class ComputerViewController: UIViewController {
   
   // MARK: - Properties
   
-  var computer: Computer?
+  var computer: Computer?  
+  private let networkService = NetworkService()
+  
+  // MARK: - Outlets
+  
+  @IBOutlet weak var computerTableView: UITableView!
   
   // MARK: - View Lifecycle
   
@@ -20,12 +25,62 @@ class ComputerViewController: UIViewController {
     super.viewDidLoad()
     
     setup()
+    load()
   }
   
   // MARK: - Setup Method
   
   func setup() {
     navigationItem.title = computer?.name
+  }
+  
+  // MARK: - Load Method
+  
+  func load() {
+    guard let id = computer?.id else { return }
+    
+    let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers/\(id)")!
+    let request = URLRequest(url: url)
+    networkService.fetchData(with: request) { result in
+      switch result {
+      case .success(let data):
+        do {
+          let decoder = JSONDecoder()
+          decoder.dateDecodingStrategy = .iso8601
+          self.computer = try decoder.decode(Computer.self, from: data)
+        } catch {
+          print("JSON error: \(error.localizedDescription)")
+        }
+      case .failure(let error):
+        // TODO show alert
+        print(error)
+      }
+    }
+    
+    loadSimilar()
+  }
+  
+  func loadSimilar() {
+    guard let id = computer?.id else { return }
+    
+    let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers/\(id)/similar")!
+    let request = URLRequest(url: url)
+    networkService.fetchData(with: request) { result in
+      switch result {
+      case .success(let data):
+        do {
+          self.computer?.similarItems = try JSONDecoder().decode([ComputerItemSimilar].self, from: data)
+          DispatchQueue.main.async {
+            self.computerTableView.reloadData()
+          }
+        } catch {
+          print("JSON error: \(error.localizedDescription)")
+        }
+      case .failure(let error):
+        // TODO show alert
+        print(error)
+      }
+    }
   }
   
 }
@@ -46,8 +101,8 @@ extension ComputerViewController: UITableViewDataSource {
     cell.selectionStyle = .none
     
     cell.companyLabel.text = computer.company?.name
-    cell.introducedLabel.text = computer.introduced
-    cell.discontinuedLabel.text = computer.discounted
+    cell.introducedLabel.text = computer.introduced?.formatted()
+    cell.discontinuedLabel.text = computer.discounted?.formatted()
     
     cell.descriptionLabel.text = cell.isExpanded ? computer.description : String(computer.description?.prefix(100) ?? "")
     
@@ -73,7 +128,9 @@ extension ComputerViewController: UITableViewDataSource {
     ////cell.addConstraint(cell.similarItemsViewHeightConstraint)
     //cell.similarItemsViewHeightConstraint.constant = 0
     
-    addSimilarItems(to: cell)
+    if let similarItems = computer.similarItems {
+      addSubviews(similarItems, to: cell)
+    }
     
     return cell
   }
@@ -84,16 +141,16 @@ extension ComputerViewController: UITableViewDataSource {
 
 extension ComputerViewController {
   
-  func addSimilarItems(to cell: ComputerDescriptionCell) {
+  func addSubviews(_ items: [ComputerItemSimilar], to cell: ComputerDescriptionCell) {
     cell.similarItemsView.subviews.forEach({ if $0 is SimilarItemButton { $0.removeFromSuperview() } })
     
     let buttonHeight: CGFloat = 30.0
     var topOffset: CGFloat = 10.0
     
-    for i in 0..<5 {
-      let button = SimilarItemButton(id: i)
+    for item in items {
+      let button = SimilarItemButton(id: item.id)
       button.addTarget(self, action: #selector(similarItemButtonClicked), for: .touchUpInside)
-      button.setTitle("test", for: .normal)
+      button.setTitle(item.name, for: .normal)
       
       cell.similarItemsView.addSubview(button)
       button.translatesAutoresizingMaskIntoConstraints = false

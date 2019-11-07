@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Company {
+struct Company: Decodable {
   let id: Int
   let name: String
 }

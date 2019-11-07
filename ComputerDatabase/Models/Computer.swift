@@ -8,12 +8,13 @@
 
 import Foundation
 
-struct Computer {
+struct Computer: Decodable {
   let id: Int
   let name: String
-  let introduced: String?
-  let discounted: String?
+  let introduced: Date?
+  let discounted: Date?
   let imageUrl: URL?
   let company: Company?
   let description: String?
+  var similarItems: [ComputerItemSimilar]?
 }

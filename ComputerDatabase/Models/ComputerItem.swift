@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct ComputerItem {
+struct ComputerItem: Decodable {
   let id: Int
   let name: String
   let company: Company?

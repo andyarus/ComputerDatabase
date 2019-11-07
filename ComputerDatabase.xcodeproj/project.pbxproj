@@ -20,10 +20,13 @@
 		9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE9D2371F5FE00963121 /* ComputerItem.swift */; };
 		9291FEA02371F65600963121 /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE9F2371F65600963121 /* Company.swift */; };
 		9291FEA22371F67F00963121 /* Computer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA12371F67F00963121 /* Computer.swift */; };
-		9291FEA42371F74F00963121 /* SimilarComputerItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA32371F74F00963121 /* SimilarComputerItem.swift */; };
 		9291FEA6237204F200963121 /* ComputerDescriptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA5237204F200963121 /* ComputerDescriptionCell.swift */; };
 		9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA723720F8700963121 /* SimilarItemButton.swift */; };
 		9291FEAA237237B800963121 /* UIImageView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FEA9237237B800963121 /* UIImageView+Extensions.swift */; };
+		92C021A523735ED40099C015 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021A423735ED40099C015 /* NetworkService.swift */; };
+		92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021A8237376660099C015 /* ComputerItemsPage.swift */; };
+		92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021AB237382A00099C015 /* ComputerItemSimilar.swift */; };
+		92C021B023738FC60099C015 /* Date+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021AF23738FC60099C015 /* Date+Format.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,10 +66,13 @@
 		9291FE9D2371F5FE00963121 /* ComputerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItem.swift; sourceTree = "<group>"; };
 		9291FE9F2371F65600963121 /* Company.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		9291FEA12371F67F00963121 /* Computer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Computer.swift; sourceTree = "<group>"; };
-		9291FEA32371F74F00963121 /* SimilarComputerItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarComputerItem.swift; sourceTree = "<group>"; };
 		9291FEA5237204F200963121 /* ComputerDescriptionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerDescriptionCell.swift; sourceTree = "<group>"; };
 		9291FEA723720F8700963121 /* SimilarItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimilarItemButton.swift; sourceTree = "<group>"; };
 		9291FEA9237237B800963121 /* UIImageView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+Extensions.swift"; sourceTree = "<group>"; };
+		92C021A423735ED40099C015 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
+		92C021A8237376660099C015 /* ComputerItemsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItemsPage.swift; sourceTree = "<group>"; };
+		92C021AB237382A00099C015 /* ComputerItemSimilar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItemSimilar.swift; sourceTree = "<group>"; };
+		92C021AF23738FC60099C015 /* Date+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Format.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -124,6 +130,7 @@
 				9291FE952371D18000963121 /* Resources */,
 				9291FE922371D14E00963121 /* Services */,
 				9291FE932371D15B00963121 /* Storyboards */,
+				92C021AA2373811B0099C015 /* Supporting Files */,
 				9291FE942371D16300963121 /* View Controllers */,
 				9291FE9A2371EC7000963121 /* Views */,
 			);
@@ -168,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				9291FEA9237237B800963121 /* UIImageView+Extensions.swift */,
+				92C021AF23738FC60099C015 /* Date+Format.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -178,7 +186,8 @@
 				9291FE9F2371F65600963121 /* Company.swift */,
 				9291FEA12371F67F00963121 /* Computer.swift */,
 				9291FE9D2371F5FE00963121 /* ComputerItem.swift */,
-				9291FEA32371F74F00963121 /* SimilarComputerItem.swift */,
+				92C021AB237382A00099C015 /* ComputerItemSimilar.swift */,
+				92C021A8237376660099C015 /* ComputerItemsPage.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -186,6 +195,7 @@
 		9291FE922371D14E00963121 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				92C021A423735ED40099C015 /* NetworkService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -211,7 +221,6 @@
 		9291FE952371D18000963121 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9291FE6C2371CEE200963121 /* Info.plist */,
 				9291FE672371CEE200963121 /* Assets.xcassets */,
 			);
 			path = Resources;
@@ -225,6 +234,14 @@
 				9291FEA723720F8700963121 /* SimilarItemButton.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		92C021AA2373811B0099C015 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9291FE6C2371CEE200963121 /* Info.plist */,
+			);
+			path = "Supporting Files";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -361,14 +378,17 @@
 				9291FEA22371F67F00963121 /* Computer.swift in Sources */,
 				9291FE972371D31400963121 /* ComputersViewController.swift in Sources */,
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
+				92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */,
 				9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
-				9291FEA42371F74F00963121 /* SimilarComputerItem.swift in Sources */,
+				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
+				92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */,
 				9291FEAA237237B800963121 /* UIImageView+Extensions.swift in Sources */,
 				9291FEA6237204F200963121 /* ComputerDescriptionCell.swift in Sources */,
 				9291FE9C2371EC9400963121 /* ComputerCell.swift in Sources */,
 				9291FEA02371F65600963121 /* Company.swift in Sources */,
 				9291FE662371CEE100963121 /* ComputerDatabase.xcdatamodeld in Sources */,
+				92C021A523735ED40099C015 /* NetworkService.swift in Sources */,
 				9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -546,7 +566,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4STK32K5N5;
-				INFOPLIST_FILE = "$(SRCROOT)/ComputerDatabase/Resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ComputerDatabase/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -564,7 +584,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4STK32K5N5;
-				INFOPLIST_FILE = "$(SRCROOT)/ComputerDatabase/Resources/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/ComputerDatabase/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
