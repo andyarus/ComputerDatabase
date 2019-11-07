@@ -8,7 +8,7 @@
 
 import Foundation
 
-class NetworkService {
+class NetworkService: NetworkServiceProtocol {
   
   enum RequestResult {
     case success(Data)

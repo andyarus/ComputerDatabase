@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7222374B216005E00F1 /* DatabaseService.swift */; };
+		9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */; };
+		9269E7282374B287005E00F1 /* NetworkServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7272374B287005E00F1 /* NetworkServiceProtocol.swift */; };
 		9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE5D2371CEE100963121 /* AppDelegate.swift */; };
 		9291FE632371CEE100963121 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9291FE612371CEE100963121 /* Main.storyboard */; };
 		9291FE662371CEE100963121 /* ComputerDatabase.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9291FE642371CEE100963121 /* ComputerDatabase.xcdatamodeld */; };
@@ -47,6 +50,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9269E7222374B216005E00F1 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
+		9269E7272374B287005E00F1 /* NetworkServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceProtocol.swift; sourceTree = "<group>"; };
 		9291FE5A2371CEE100963121 /* ComputerDatabase.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ComputerDatabase.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9291FE5D2371CEE100963121 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9291FE622371CEE100963121 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -100,6 +106,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9269E7242374B247005E00F1 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */,
+				9269E7272374B287005E00F1 /* NetworkServiceProtocol.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
 		9291FE512371CEE100963121 = {
 			isa = PBXGroup;
 			children = (
@@ -127,6 +142,7 @@
 				9291FE8F2371D13100963121 /* Data Models */,
 				9291FE902371D13C00963121 /* Extensions */,
 				9291FE912371D14500963121 /* Models */,
+				9269E7242374B247005E00F1 /* Protocols */,
 				9291FE952371D18000963121 /* Resources */,
 				9291FE922371D14E00963121 /* Services */,
 				9291FE932371D15B00963121 /* Storyboards */,
@@ -196,6 +212,7 @@
 			isa = PBXGroup;
 			children = (
 				92C021A423735ED40099C015 /* NetworkService.swift */,
+				9269E7222374B216005E00F1 /* DatabaseService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -376,17 +393,20 @@
 			buildActionMask = 2147483647;
 			files = (
 				9291FEA22371F67F00963121 /* Computer.swift in Sources */,
+				9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */,
 				9291FE972371D31400963121 /* ComputersViewController.swift in Sources */,
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
 				92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */,
 				9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
+				9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */,
 				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
 				92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */,
 				9291FEAA237237B800963121 /* UIImageView+Extensions.swift in Sources */,
 				9291FEA6237204F200963121 /* ComputerDescriptionCell.swift in Sources */,
 				9291FE9C2371EC9400963121 /* ComputerCell.swift in Sources */,
 				9291FEA02371F65600963121 /* Company.swift in Sources */,
+				9269E7282374B287005E00F1 /* NetworkServiceProtocol.swift in Sources */,
 				9291FE662371CEE100963121 /* ComputerDatabase.xcdatamodeld in Sources */,
 				92C021A523735ED40099C015 /* NetworkService.swift in Sources */,
 				9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */,

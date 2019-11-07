@@ -14,6 +14,7 @@ class ComputerViewController: UIViewController {
   
   var computer: Computer?  
   private let networkService = NetworkService()
+  private let databaseService = DatabaseService()
   
   // MARK: - Outlets
   
@@ -38,6 +39,14 @@ class ComputerViewController: UIViewController {
   
   func load() {
     guard let id = computer?.id else { return }
+    
+    // tmp test
+    //databaseService.deleteData()
+    let computers = databaseService.retrieveData()
+    print("computers.count:\(computers.count)")
+    computers.forEach { computer in
+      print("computer:\(computer)")
+    }
     
     let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers/\(id)")!
     let request = URLRequest(url: url)
@@ -80,6 +89,13 @@ class ComputerViewController: UIViewController {
         // TODO show alert
         print(error)
       }
+      
+      // tmp
+      guard let computer = self.computer else { return }
+      DispatchQueue.main.async {
+        self.databaseService.createData(for: computer)
+      }
+      
     }
   }
   
