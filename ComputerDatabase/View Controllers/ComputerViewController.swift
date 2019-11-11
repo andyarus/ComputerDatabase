@@ -13,6 +13,7 @@ class ComputerViewController: UIViewController {
   // MARK: - Properties
   
   var computer: Computer?
+  
   private let computerApi = ComputerApi()
   private let databaseService = DatabaseService()
   
@@ -40,14 +41,6 @@ class ComputerViewController: UIViewController {
   func load() {
     guard let id = computer?.id else { return }
     
-//    // tmp test
-//    //databaseService.deleteData()
-//    let computers = databaseService.retrieveData()
-//    print("computers.count:\(computers.count)")
-//    computers.forEach { computer in
-//      print("computer:\(computer)")
-//    }
-    
     computerApi.getComputer(for: id, onSuccess: { [weak self] computer in
       guard let self = self else { return }
       let similarItems = self.computer?.similarItems // if loaded earlier
@@ -69,13 +62,6 @@ class ComputerViewController: UIViewController {
       DispatchQueue.main.async {
         self.computerTableView.reloadData()
       }
-      
-//      // tmp
-//      guard let computer = self.computer else { return }
-//      DispatchQueue.main.async {
-//        self.databaseService.createData(for: computer)
-//      }
-      
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
     })
@@ -128,25 +114,19 @@ extension ComputerViewController: UITableViewDataSource {
     } else {
       cell.discontinuedView.isHidden = true
     }
-    
-    
     if let description = computer.description {
-      cell.descriptionLabel.text = cell.isExpanded ? description : String(description.prefix(100))
+      cell.descriptionLabel.text = cell.isExpanded ? description : "\(String(description.prefix(80)))..."
       if cell.descriptionView.gestureRecognizers == nil {
         cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
       }
     } else {
       cell.descriptionView.isHidden = true
     }
-    
-    
     if let imageData = computer.imageData {
       cell.computerImageView.image = UIImage(data: imageData)
     } else {
       cell.computerImageView.isHidden = true
     }
-    
-    
     if let similarItems = computer.similarItems {
       addSubviews(similarItems, to: cell)
     } else {
@@ -163,27 +143,13 @@ extension ComputerViewController: UITableViewDataSource {
 extension ComputerViewController {
   
   func addSubviews(_ items: [ComputerItemSimilar], to cell: ComputerDescriptionCell) {
-    cell.similarItemsView.subviews.forEach({ if $0 is SimilarItemButton { $0.removeFromSuperview() } })
-    
-    let buttonHeight: CGFloat = 30.0
-    var topOffset: CGFloat = 20.0
-    
+    cell.similarItemsViewStackView.subviews.forEach({ $0.removeFromSuperview() })
     for item in items {
       let button = SimilarItemButton(id: item.id)
       button.addTarget(self, action: #selector(similarItemButtonClicked), for: .touchUpInside)
       button.setTitle(item.name, for: .normal)
       
-      cell.similarItemsView.addSubview(button)
-      button.translatesAutoresizingMaskIntoConstraints = false
-      
-      NSLayoutConstraint.activate([
-        button.heightAnchor.constraint(equalToConstant: buttonHeight),
-        button.leadingAnchor.constraint(equalTo: cell.similarItemsView.leadingAnchor, constant: 0.0),
-        button.trailingAnchor.constraint(equalTo: cell.similarItemsView.trailingAnchor, constant: 0.0),
-        button.topAnchor.constraint(equalTo: cell.similarItemsView.topAnchor, constant: topOffset),
-        ])
-      
-      topOffset += buttonHeight
+      cell.similarItemsViewStackView.addArrangedSubview(button)
     }
   }
   
@@ -194,10 +160,16 @@ extension ComputerViewController {
   
   @objc
   func descriptionViewClicked(_ sender: UITapGestureRecognizer) {
-    guard let view = sender.view, let cell = view.superview?.superview as? ComputerDescriptionCell else {
-      return
-    }
+    let indexPath = IndexPath(row: 0, section: 0)
+    guard let cell = computerTableView.cellForRow(at: indexPath) as? ComputerDescriptionCell else { return }
     cell.isExpanded.toggle()
+    // Just fun animation
+    UIView.transition(with: computerTableView,
+                      duration: 0.75,
+                      options: .transitionFlipFromLeft,
+                      animations: { [weak self] in
+                        self?.computerTableView.reloadData()
+    })
   }
   
 }

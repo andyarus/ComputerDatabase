@@ -23,9 +23,8 @@ class ComputerDescriptionCell: UITableViewCell {
   @IBOutlet weak var descriptionView: UIView!
   @IBOutlet weak var descriptionLabel: UILabel!
   
-  @IBOutlet weak var imageBlockView: UIView!
   @IBOutlet weak var computerImageView: UIImageView!
   
   @IBOutlet weak var similarItemsView: UIView!
-  @IBOutlet weak var similarItemsViewTopBorder: UIView!
+  @IBOutlet weak var similarItemsViewStackView: UIStackView!
 }
