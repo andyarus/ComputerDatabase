@@ -9,6 +9,8 @@
 import UIKit
 
 class ComputerDescriptionCell: UITableViewCell {
+  static var height: CGFloat = 55.0
+  
   var isExpanded: Bool = false
   
   @IBOutlet weak var companyView: UIView!
@@ -33,4 +35,5 @@ class ComputerDescriptionCell: UITableViewCell {
   
   @IBOutlet weak var similarItemsView: UIView!
   @IBOutlet weak var similarItemsViewHeightConstraint: NSLayoutConstraint!  
+  @IBOutlet weak var similarItemsViewTopBorder: UIView!
 }

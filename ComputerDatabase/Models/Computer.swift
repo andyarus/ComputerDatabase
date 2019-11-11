@@ -11,10 +11,29 @@ import Foundation
 struct Computer: Decodable {
   let id: Int
   let name: String
-  let introduced: Date?
-  let discounted: Date?
-  let imageUrl: URL?
-  let company: Company?
-  let description: String?
+  var introduced: Date?
+  var discounted: Date?
+  var imageUrl: URL?
+  var imageData: Data?
+  var company: Company?
+  var description: String?
   var similarItems: [ComputerItemSimilar]?
+  
+  init(id: Int,
+       name: String,
+       introduced: Date? = nil,
+       discounted: Date? = nil,
+       imageUrl: URL? = nil,
+       company: Company? = nil,
+       description: String? = nil,
+       similarItems: [ComputerItemSimilar]? = nil) {
+    self.id = id
+    self.name = name
+    self.introduced = introduced
+    self.discounted = discounted
+    self.imageUrl = imageUrl
+    self.company = company
+    self.description = description
+    self.similarItems = similarItems
+  }
 }

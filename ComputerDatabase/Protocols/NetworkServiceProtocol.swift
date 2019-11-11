@@ -9,5 +9,7 @@
 import Foundation
 
 protocol NetworkServiceProtocol {
-  func fetchData(with request: URLRequest, _ completion: @escaping (NetworkService.RequestResult) -> Void)
+  func send(_ request: URLRequest,
+    onSuccess success: @escaping (_ data: Data) -> Void,
+    onFailure failure: @escaping (_ error: Error) -> Void)
 }

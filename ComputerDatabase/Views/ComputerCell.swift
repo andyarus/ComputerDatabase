@@ -9,6 +9,8 @@
 import UIKit
 
 class ComputerCell: UITableViewCell {
+  static var height: CGFloat = 40.0
+  
   @IBOutlet weak var computerNameView: UIView!
   @IBOutlet weak var computerNameLabel: UILabel!
   

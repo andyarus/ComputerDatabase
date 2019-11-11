@@ -12,8 +12,8 @@ class ComputerViewController: UIViewController {
   
   // MARK: - Properties
   
-  var computer: Computer?  
-  private let networkService = NetworkService()
+  var computer: Computer?
+  private let computerApi = ComputerApi()
   private let databaseService = DatabaseService()
   
   // MARK: - Outlets
@@ -35,68 +35,65 @@ class ComputerViewController: UIViewController {
     navigationItem.title = computer?.name
   }
   
-  // MARK: - Load Method
+  // MARK: - Load Methods
   
   func load() {
     guard let id = computer?.id else { return }
     
-    // tmp test
-    //databaseService.deleteData()
-    let computers = databaseService.retrieveData()
-    print("computers.count:\(computers.count)")
-    computers.forEach { computer in
-      print("computer:\(computer)")
-    }
+//    // tmp test
+//    //databaseService.deleteData()
+//    let computers = databaseService.retrieveData()
+//    print("computers.count:\(computers.count)")
+//    computers.forEach { computer in
+//      print("computer:\(computer)")
+//    }
     
-    let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers/\(id)")!
-    let request = URLRequest(url: url)
-    networkService.fetchData(with: request) { result in
-      switch result {
-      case .success(let data):
-        do {
-          let decoder = JSONDecoder()
-          decoder.dateDecodingStrategy = .iso8601
-          self.computer = try decoder.decode(Computer.self, from: data)
-        } catch {
-          print("JSON error: \(error.localizedDescription)")
-        }
-      case .failure(let error):
-        // TODO show alert
-        print(error)
+    computerApi.getComputer(for: id, onSuccess: { [weak self] computer in
+      guard let self = self else { return }
+      let similarItems = self.computer?.similarItems // if loaded earlier
+      self.computer = computer
+      self.computer?.similarItems = similarItems
+      self.loadImage()
+      DispatchQueue.main.async {
+        self.computerTableView.reloadData()
       }
-    }
+    }, onFailure: { [weak self] error in
+      guard let self = self else { return }
+      UIAlertController(title: "Error", message: "Сould not get the computer description", preferredStyle: .alert).show(in: self)
+      print("request error: \(error.localizedDescription)")
+    })
     
-    loadSimilar()
+    computerApi.getComputerSimilar(for: id, onSuccess: { [weak self] similarItems in
+      guard let self = self else { return }
+      self.computer?.similarItems = similarItems
+      DispatchQueue.main.async {
+        self.computerTableView.reloadData()
+      }
+      
+//      // tmp
+//      guard let computer = self.computer else { return }
+//      DispatchQueue.main.async {
+//        self.databaseService.createData(for: computer)
+//      }
+      
+    }, onFailure: { error in
+      print("request error: \(error.localizedDescription)")
+    })
+    
   }
   
-  func loadSimilar() {
-    guard let id = computer?.id else { return }
-    
-    let url = URL(string: "http://testwork.nsd.naumen.ru/rest/computers/\(id)/similar")!
-    let request = URLRequest(url: url)
-    networkService.fetchData(with: request) { result in
-      switch result {
-      case .success(let data):
-        do {
-          self.computer?.similarItems = try JSONDecoder().decode([ComputerItemSimilar].self, from: data)
-          DispatchQueue.main.async {
-            self.computerTableView.reloadData()
-          }
-        } catch {
-          print("JSON error: \(error.localizedDescription)")
-        }
-      case .failure(let error):
-        // TODO show alert
-        print(error)
-      }
-      
-      // tmp
-      guard let computer = self.computer else { return }
+  func loadImage() {
+    guard let imageUrl = computer?.imageUrl else { return }
+    computerApi.getImage(for: imageUrl, onSuccess: { [weak self] data in
+      guard let self = self,
+        let _ = UIImage(data: data) else { return }
+      self.computer?.imageData = data
       DispatchQueue.main.async {
-        self.databaseService.createData(for: computer)
+        self.computerTableView.reloadData()
       }
-      
-    }
+    }, onFailure: { error in
+      print("request error: \(error.localizedDescription)")
+    })
   }
   
 }
@@ -116,36 +113,52 @@ extension ComputerViewController: UITableViewDataSource {
     
     cell.selectionStyle = .none
     
-    cell.companyLabel.text = computer.company?.name
-    cell.introducedLabel.text = computer.introduced?.formatted()
-    cell.discontinuedLabel.text = computer.discounted?.formatted()
-    
-    cell.descriptionLabel.text = cell.isExpanded ? computer.description : String(computer.description?.prefix(100) ?? "")
-    
-    if cell.descriptionView.gestureRecognizers == nil {
-      cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
+    if let company = computer.company {
+      //cell.companyViewHeightConstraint.constant = 100
+      cell.companyViewHeightConstraint.constant = ComputerDescriptionCell.height
+      cell.companyLabel.text = company.name
+    } else {
+      cell.companyViewHeightConstraint.constant = 0
+    }
+    if let introduced = computer.introduced {
+      cell.introducedViewHeightConstraint.constant = ComputerDescriptionCell.height
+      cell.introducedLabel.text = introduced.formatted()
+    } else {
+      cell.introducedViewHeightConstraint.constant = 0
+    }
+    if let discounted = computer.discounted {
+      cell.discontinuedViewHeightConstraint.constant = ComputerDescriptionCell.height
+      cell.discontinuedLabel.text = discounted.formatted()
+    } else {
+      cell.discontinuedViewHeightConstraint.constant = 0
     }
     
-    if let imageUrl = computer.imageUrl {
-      cell.computerImageView.downloaded(from: imageUrl, contentMode: .scaleToFill)
+    if let description = computer.description {
+      cell.descriptionLabel.text = cell.isExpanded ? description : String(description.prefix(100))
+      if cell.descriptionView.gestureRecognizers == nil {
+        cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
+      }
+    } else {
+      //cell.descriptionViewHeightConstraint.constant = 0
+      // hide description
+      cell.addConstraint(cell.descriptionViewHeightConstraint)
+    }
+
+    if let imageData = computer.imageData {
+      cell.computerImageView.image = UIImage(data: imageData)
     } else {
       // hide imageView
       cell.addConstraint(cell.imageBlockViewHeightConstraint)
     }
     
-    //cell.companyViewHeightConstraint.constant = computer?.company != nil ? 40 : 0
-    //cell.introducedViewHeightConstraint.constant = 0
-    //cell.discontinuedViewHeightConstraint.constant = 0
-    
-    // hide description
-    //cell.addConstraint(cell.descriptionViewHeightConstraint)
-    
-    // hide similarItemsView
-    ////cell.addConstraint(cell.similarItemsViewHeightConstraint)
-    //cell.similarItemsViewHeightConstraint.constant = 0
-    
     if let similarItems = computer.similarItems {
       addSubviews(similarItems, to: cell)
+      cell.similarItemsViewHeightConstraint.constant = 180
+    } else {
+      // hide similarItemsView
+      cell.similarItemsView.isHidden = true
+      cell.similarItemsViewHeightConstraint.constant = 0
+      cell.similarItemsViewTopBorder.isHidden = true
     }
     
     return cell
@@ -161,7 +174,7 @@ extension ComputerViewController {
     cell.similarItemsView.subviews.forEach({ if $0 is SimilarItemButton { $0.removeFromSuperview() } })
     
     let buttonHeight: CGFloat = 30.0
-    var topOffset: CGFloat = 10.0
+    var topOffset: CGFloat = 20.0
     
     for item in items {
       let button = SimilarItemButton(id: item.id)

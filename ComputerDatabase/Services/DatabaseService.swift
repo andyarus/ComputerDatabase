@@ -130,48 +130,4 @@ class DatabaseService: DatabaseServiceProtocol {
     }
   }
   
-  
-  
-
-
-//  func updateData(by key: String, with entity: Entity) {
-//    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
-//    let managedObjectContext = appDelegate.persistentContainer.viewContext
-//
-//    let fetchRequest: NSFetchRequest<NSFetchRequestResult> = NSFetchRequest.init(entityName: entity.name())
-//    fetchRequest.predicate = NSPredicate(format: "phone = %@", key)
-//
-//    do {
-//      let result = try managedObjectContext.fetch(fetchRequest)
-//      guard let managedObjects = result as? [NSManagedObject],
-//        let managedObject = managedObjects.first else { return }
-//
-//      switch entity {
-//      case .colleague(let colleague):
-//        guard let colleague = colleague else { return }
-//        managedObject.setValue(colleague.firstName, forKeyPath: "firstName")
-//        managedObject.setValue(colleague.lastName, forKeyPath: "lastName")
-//        managedObject.setValue(colleague.middleName, forKeyPath: "middleName")
-//        managedObject.setValue(colleague.phone, forKeyPath: "phone")
-//        managedObject.setValue(colleague.workPhone, forKeyPath: "workPhone")
-//        managedObject.setValue(colleague.position, forKeyPath: "position")
-//        let photo = colleague.photo?.jpegData(compressionQuality: 1.0)
-//        managedObject.setValue(photo, forKeyPath: "photo")
-//      case .friend(let friend):
-//        guard let friend = friend else { return }
-//        managedObject.setValue(friend.firstName, forKeyPath: "firstName")
-//        managedObject.setValue(friend.lastName, forKeyPath: "lastName")
-//        managedObject.setValue(friend.middleName, forKeyPath: "middleName")
-//        managedObject.setValue(friend.phone, forKeyPath: "phone")
-//        managedObject.setValue(friend.birthday, forKeyPath: "birthday")
-//        let photo = friend.photo?.jpegData(compressionQuality: 1.0)
-//        managedObject.setValue(photo, forKeyPath: "photo")
-//      }
-//
-//      try managedObjectContext.save()
-//    } catch {
-//      print("Data updating failed: \(error)")
-//    }
-//  }
-  
 }
