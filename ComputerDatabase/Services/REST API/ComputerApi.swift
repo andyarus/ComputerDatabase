@@ -15,7 +15,6 @@ final class ComputerApi: NetworkService, ComputerApiProtocol {
     send(request, onSuccess: { data in
       do {
         let computerItemsPage = try JSONDecoder().decode(ComputerItemsPage.self, from: data)
-        print(computerItemsPage)
         success(computerItemsPage.items, computerItemsPage.page, computerItemsPage.total)
       } catch {
         failure(error)

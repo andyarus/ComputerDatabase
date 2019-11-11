@@ -114,24 +114,21 @@ extension ComputerViewController: UITableViewDataSource {
     cell.selectionStyle = .none
     
     if let company = computer.company {
-      //cell.companyViewHeightConstraint.constant = 100
-      cell.companyViewHeightConstraint.constant = ComputerDescriptionCell.height
       cell.companyLabel.text = company.name
     } else {
-      cell.companyViewHeightConstraint.constant = 0
+      cell.companyView.isHidden = true
     }
     if let introduced = computer.introduced {
-      cell.introducedViewHeightConstraint.constant = ComputerDescriptionCell.height
       cell.introducedLabel.text = introduced.formatted()
     } else {
-      cell.introducedViewHeightConstraint.constant = 0
+      cell.introducedView.isHidden = true
     }
     if let discounted = computer.discounted {
-      cell.discontinuedViewHeightConstraint.constant = ComputerDescriptionCell.height
       cell.discontinuedLabel.text = discounted.formatted()
     } else {
-      cell.discontinuedViewHeightConstraint.constant = 0
+      cell.discontinuedView.isHidden = true
     }
+    
     
     if let description = computer.description {
       cell.descriptionLabel.text = cell.isExpanded ? description : String(description.prefix(100))
@@ -139,26 +136,21 @@ extension ComputerViewController: UITableViewDataSource {
         cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
       }
     } else {
-      //cell.descriptionViewHeightConstraint.constant = 0
-      // hide description
-      cell.addConstraint(cell.descriptionViewHeightConstraint)
+      cell.descriptionView.isHidden = true
     }
-
+    
+    
     if let imageData = computer.imageData {
       cell.computerImageView.image = UIImage(data: imageData)
     } else {
-      // hide imageView
-      cell.addConstraint(cell.imageBlockViewHeightConstraint)
+      cell.computerImageView.isHidden = true
     }
+    
     
     if let similarItems = computer.similarItems {
       addSubviews(similarItems, to: cell)
-      cell.similarItemsViewHeightConstraint.constant = 180
     } else {
-      // hide similarItemsView
       cell.similarItemsView.isHidden = true
-      cell.similarItemsViewHeightConstraint.constant = 0
-      cell.similarItemsViewTopBorder.isHidden = true
     }
     
     return cell

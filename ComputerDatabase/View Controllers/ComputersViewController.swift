@@ -155,22 +155,19 @@ extension ComputersViewController: UITableViewDataSource {
     cell.computerNameLabel.text = computer.name
     
     if let company = computer.company {
-      cell.companyViewHeightConstraint.constant = ComputerCell.height
       cell.companyLabel.text = company.name
     } else {
-      cell.companyViewHeightConstraint.constant = 0
+      cell.companyView.isHidden = true
     }
     if let introduced = computer.introduced {
-      cell.introducedViewHeightConstraint.constant = ComputerCell.height
       cell.introducedLabel.text = introduced.formatted()
     } else {
-      cell.introducedViewHeightConstraint.constant = 0
+      cell.introducedView.isHidden = true
     }
     if let discounted = computer.discounted {
-      cell.discontinuedViewHeightConstraint.constant = ComputerCell.height
       cell.discontinuedLabel.text = discounted.formatted()
     } else {
-      cell.discontinuedViewHeightConstraint.constant = 0
+      cell.discontinuedView.isHidden = true
     }
     
     return cell
