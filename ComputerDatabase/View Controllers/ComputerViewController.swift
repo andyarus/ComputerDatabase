@@ -26,8 +26,7 @@ class ComputerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setup()
-    load()
+    reload()
   }
   
   // MARK: - Setup Method
@@ -41,12 +40,34 @@ class ComputerViewController: UIViewController {
   func load() {
     guard let id = computer?.id else { return }
     
-    computerApi.getComputer(for: id, onSuccess: { [weak self] computer in
-      guard let self = self else { return }
-      let similarItems = self.computer?.similarItems // if loaded earlier
-      self.computer = computer
-      self.computer?.similarItems = similarItems
+    let loadComputerOperation = BlockOperation {
+      self.loadComputer(for: id)
+    }
+    let loadSimilarItemsOperation = BlockOperation {
+      self.loadSimilarItems(for: id)
+    }
+    let loadImageOperation = BlockOperation {
       self.loadImage()
+    }
+    loadSimilarItemsOperation.addDependency(loadComputerOperation)
+    loadImageOperation.addDependency(loadComputerOperation)
+    
+    let operationQueue = OperationQueue()
+    operationQueue.addOperation(loadComputerOperation)
+    operationQueue.addOperation(loadSimilarItemsOperation)
+    operationQueue.addOperation(loadImageOperation)
+  }
+  
+  func loadComputer(for id: Int) {
+    let group = DispatchGroup()
+    group.enter()
+    
+    self.computerApi.getComputer(for: id, onSuccess: { [weak self] computer in
+      guard let self = self else { return }
+      self.computer = computer
+      
+      group.leave()
+      
       DispatchQueue.main.async {
         self.computerTableView.reloadData()
       }
@@ -56,7 +77,11 @@ class ComputerViewController: UIViewController {
       print("request error: \(error.localizedDescription)")
     })
     
-    computerApi.getComputerSimilar(for: id, onSuccess: { [weak self] similarItems in
+    group.wait()
+  }
+  
+  func loadSimilarItems(for id: Int) {
+    self.computerApi.getComputerSimilar(for: id, onSuccess: { [weak self] similarItems in
       guard let self = self else { return }
       self.computer?.similarItems = similarItems
       DispatchQueue.main.async {
@@ -65,7 +90,6 @@ class ComputerViewController: UIViewController {
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
     })
-    
   }
   
   func loadImage() {
@@ -80,6 +104,11 @@ class ComputerViewController: UIViewController {
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
     })
+  }
+  
+  func reload() {
+    setup()
+    load()
   }
   
 }
@@ -101,16 +130,19 @@ extension ComputerViewController: UITableViewDataSource {
     
     if let company = computer.company {
       cell.companyLabel.text = company.name
+      cell.companyView.isHidden = false
     } else {
       cell.companyView.isHidden = true
     }
     if let introduced = computer.introduced {
       cell.introducedLabel.text = introduced.formatted()
+      cell.introducedView.isHidden = false
     } else {
       cell.introducedView.isHidden = true
     }
     if let discounted = computer.discounted {
       cell.discontinuedLabel.text = discounted.formatted()
+      cell.discontinuedView.isHidden = false
     } else {
       cell.discontinuedView.isHidden = true
     }
@@ -119,16 +151,19 @@ extension ComputerViewController: UITableViewDataSource {
       if cell.descriptionView.gestureRecognizers == nil {
         cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
       }
+      cell.descriptionView.isHidden = false
     } else {
       cell.descriptionView.isHidden = true
     }
     if let imageData = computer.imageData {
       cell.computerImageView.image = UIImage(data: imageData)
+      cell.computerImageView.isHidden = false
     } else {
       cell.computerImageView.isHidden = true
     }
     if let similarItems = computer.similarItems {
       addSubviews(similarItems, to: cell)
+      cell.similarItemsView.isHidden = false
     } else {
       cell.similarItemsView.isHidden = true
     }
@@ -145,7 +180,9 @@ extension ComputerViewController {
   func addSubviews(_ items: [ComputerItemSimilar], to cell: ComputerDescriptionCell) {
     cell.similarItemsViewStackView.subviews.forEach({ $0.removeFromSuperview() })
     for item in items {
-      let button = SimilarItemButton(id: item.id)
+      let computer = Computer(id: item.id,
+                          name: item.name)
+      let button = SimilarItemButton(computer: computer)
       button.addTarget(self, action: #selector(similarItemButtonClicked), for: .touchUpInside)
       button.setTitle(item.name, for: .normal)
       
@@ -155,7 +192,8 @@ extension ComputerViewController {
   
   @objc
   func similarItemButtonClicked(_ sender: SimilarItemButton) {
-    print(sender.id)
+    computer = sender.computer
+    reload()
   }
   
   @objc

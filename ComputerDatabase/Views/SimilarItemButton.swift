@@ -10,10 +10,10 @@ import UIKit
 
 class SimilarItemButton: UIButton {
   
-  let id: Int
+  let computer: Computer
   
-  required init(id: Int) {
-    self.id = id
+  required init(computer: Computer) {
+    self.computer = computer
 
     super.init(frame: .zero)
     
