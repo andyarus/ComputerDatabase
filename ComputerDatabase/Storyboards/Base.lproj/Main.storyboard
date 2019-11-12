@@ -237,7 +237,9 @@
                         <outlet property="computersTableView" destination="GZ9-R9-VUA" id="s11-m4-SPY"/>
                         <outlet property="currentPageLabel" destination="GNP-vS-PXa" id="HdI-B3-Xfh"/>
                         <outlet property="nextButton" destination="2w7-PX-uNb" id="90X-mh-QNk"/>
+                        <outlet property="nextButtonWIdthConstraint" destination="Zwa-LU-BA5" id="w1e-VR-KFv"/>
                         <outlet property="previousButton" destination="kuS-z8-dD2" id="7fJ-bE-8VW"/>
+                        <outlet property="previousButtonWidthConstraint" destination="LN7-K4-y1E" id="Lgj-SA-PRZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bu1-vK-EjH" userLabel="First Responder" sceneMemberID="firstResponder"/>

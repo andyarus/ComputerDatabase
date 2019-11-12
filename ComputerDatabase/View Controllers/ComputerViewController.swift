@@ -15,7 +15,6 @@ class ComputerViewController: UIViewController {
   var computer: Computer?
   
   private let computerApi = ComputerApi()
-  private let databaseService = DatabaseService()
   
   // MARK: - Outlets
   
@@ -38,13 +37,11 @@ class ComputerViewController: UIViewController {
   // MARK: - Load Methods
   
   func load() {
-    guard let id = computer?.id else { return }
-    
     let loadComputerOperation = BlockOperation {
-      self.loadComputer(for: id)
+      self.loadComputer()
     }
     let loadSimilarItemsOperation = BlockOperation {
-      self.loadSimilarItems(for: id)
+      self.loadSimilarItems()
     }
     let loadImageOperation = BlockOperation {
       self.loadImage()
@@ -58,11 +55,13 @@ class ComputerViewController: UIViewController {
     operationQueue.addOperation(loadImageOperation)
   }
   
-  func loadComputer(for id: Int) {
+  func loadComputer() {
+    guard let computer = computer else { return }
+    
     let group = DispatchGroup()
     group.enter()
     
-    self.computerApi.getComputer(for: id, onSuccess: { [weak self] computer in
+    computerApi.getComputer(for: computer.id, onSuccess: { [weak self] computer in
       guard let self = self else { return }
       self.computer = computer
       
@@ -75,17 +74,24 @@ class ComputerViewController: UIViewController {
       guard let self = self else { return }
       UIAlertController(title: "Error", message: "Сould not get the computer description", preferredStyle: .alert).show(in: self)
       print("request error: \(error.localizedDescription)")
+      
+      group.leave()
     })
     
     group.wait()
   }
   
-  func loadSimilarItems(for id: Int) {
-    self.computerApi.getComputerSimilar(for: id, onSuccess: { [weak self] similarItems in
+  func loadSimilarItems() {
+    guard let computer = computer else { return }
+    computerApi.getComputerSimilar(for: computer, onSuccess: { [weak self] similarItems in
       guard let self = self else { return }
       self.computer?.similarItems = similarItems
       DispatchQueue.main.async {
         self.computerTableView.reloadData()
+      }      
+      /// Update
+      if let computer = self.computer {
+        self.computerApi.saveComputer(computer)
       }
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
@@ -93,8 +99,10 @@ class ComputerViewController: UIViewController {
   }
   
   func loadImage() {
-    guard let imageUrl = computer?.imageUrl else { return }
-    computerApi.getImage(for: imageUrl, onSuccess: { [weak self] data in
+    // TODO Kingfisher
+    guard let computer = computer else { return }
+    //guard let imageUrl = computer?.imageUrl else { return }
+    computerApi.getImage(for: computer, onSuccess: { [weak self] data in
       guard let self = self,
         let _ = UIImage(data: data) else { return }
       self.computer?.imageData = data
@@ -161,7 +169,7 @@ extension ComputerViewController: UITableViewDataSource {
     } else {
       cell.computerImageView.isHidden = true
     }
-    if let similarItems = computer.similarItems {
+    if let similarItems = computer.similarItems, similarItems.count > 0 {
       addSubviews(similarItems, to: cell)
       cell.similarItemsView.isHidden = false
     } else {

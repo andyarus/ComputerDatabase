@@ -1,20 +1,20 @@
 //
-//  ComputerApiProvider.swift
+//  ComputerNetworkApiProvider.swift
 //  ComputerDatabase
 //
-//  Created by Andrei Coder on 11/11/2019.
+//  Created by Andrei Coder on 12/11/2019.
 //  Copyright © 2019 yaav. All rights reserved.
 //
 
 import Foundation
 
-enum ComputerApiProvider {
+enum ComputerNetworkApiProvider {
   case computers(page: Int)
   case computer(id: Int)
   case computerSimilar(id: Int)
 }
 
-extension ComputerApiProvider {
+extension ComputerNetworkApiProvider {
   
   var baseURL: URL { return URL(string: "http://testwork.nsd.naumen.ru")! }
   

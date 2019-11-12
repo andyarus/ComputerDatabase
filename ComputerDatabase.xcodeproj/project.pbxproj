@@ -7,9 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9266AC96237895C5002C87E0 /* ComputerApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9266AC95237895C5002C87E0 /* ComputerApiProvider.swift */; };
-		9266AC9A23789614002C87E0 /* ComputerApiProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9266AC9923789614002C87E0 /* ComputerApiProtocol.swift */; };
-		9266AC9C2378964B002C87E0 /* ComputerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9266AC9B2378964B002C87E0 /* ComputerApi.swift */; };
+		921FE9BD237A0502006C0482 /* UIScreen+Size.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9BC237A0502006C0482 /* UIScreen+Size.swift */; };
+		921FE9C1237A091D006C0482 /* ComputerDatabaseApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9C0237A091D006C0482 /* ComputerDatabaseApi.swift */; };
+		921FE9C3237A0930006C0482 /* ComputerDatabaseApiProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9C2237A0930006C0482 /* ComputerDatabaseApiProtocol.swift */; };
+		921FE9C5237A095D006C0482 /* ComputerNetworkApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9C4237A095D006C0482 /* ComputerNetworkApi.swift */; };
+		921FE9C7237A096F006C0482 /* ComputerNetworkApiProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9C6237A096F006C0482 /* ComputerNetworkApiProtocol.swift */; };
+		921FE9C9237A097A006C0482 /* ComputerNetworkApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9C8237A097A006C0482 /* ComputerNetworkApiProvider.swift */; };
+		921FE9CB237A0A6A006C0482 /* ComputerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9CA237A0A6A006C0482 /* ComputerApi.swift */; };
+		921FE9CD237A0A7A006C0482 /* ComputerApiProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */; };
+		921FE9D1237A23E4006C0482 /* ComputerApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */; };
 		9266AC9E2378A1B8002C87E0 /* UIAlertController+Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9266AC9D2378A1B8002C87E0 /* UIAlertController+Show.swift */; };
 		9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7222374B216005E00F1 /* DatabaseService.swift */; };
 		9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */; };
@@ -53,9 +59,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		9266AC95237895C5002C87E0 /* ComputerApiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProvider.swift; sourceTree = "<group>"; };
-		9266AC9923789614002C87E0 /* ComputerApiProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProtocol.swift; sourceTree = "<group>"; };
-		9266AC9B2378964B002C87E0 /* ComputerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApi.swift; sourceTree = "<group>"; };
+		921FE9BC237A0502006C0482 /* UIScreen+Size.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+Size.swift"; sourceTree = "<group>"; };
+		921FE9C0237A091D006C0482 /* ComputerDatabaseApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerDatabaseApi.swift; sourceTree = "<group>"; };
+		921FE9C2237A0930006C0482 /* ComputerDatabaseApiProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerDatabaseApiProtocol.swift; sourceTree = "<group>"; };
+		921FE9C4237A095D006C0482 /* ComputerNetworkApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerNetworkApi.swift; sourceTree = "<group>"; };
+		921FE9C6237A096F006C0482 /* ComputerNetworkApiProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerNetworkApiProtocol.swift; sourceTree = "<group>"; };
+		921FE9C8237A097A006C0482 /* ComputerNetworkApiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerNetworkApiProvider.swift; sourceTree = "<group>"; };
+		921FE9CA237A0A6A006C0482 /* ComputerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApi.swift; sourceTree = "<group>"; };
+		921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProtocol.swift; sourceTree = "<group>"; };
+		921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProvider.swift; sourceTree = "<group>"; };
 		9266AC9D2378A1B8002C87E0 /* UIAlertController+Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Show.swift"; sourceTree = "<group>"; };
 		9269E7222374B216005E00F1 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
@@ -112,23 +124,53 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9266AC9023787FC0002C87E0 /* REST API */ = {
+		921FE9BE237A08DD006C0482 /* Database API */ = {
 			isa = PBXGroup;
 			children = (
-				9266AC95237895C5002C87E0 /* ComputerApiProvider.swift */,
-				9266AC9923789614002C87E0 /* ComputerApiProtocol.swift */,
-				9266AC9B2378964B002C87E0 /* ComputerApi.swift */,
+				921FE9C0237A091D006C0482 /* ComputerDatabaseApi.swift */,
+				921FE9C2237A0930006C0482 /* ComputerDatabaseApiProtocol.swift */,
 			);
-			path = "REST API";
+			path = "Database API";
 			sourceTree = "<group>";
 		};
-		9269E7242374B247005E00F1 /* Protocols */ = {
+		921FE9BF237A08F0006C0482 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */,
+				921FE9BE237A08DD006C0482 /* Database API */,
+				9266AC9023787FC0002C87E0 /* Network API */,
+				921FE9CA237A0A6A006C0482 /* ComputerApi.swift */,
+				921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */,
+				921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		921FE9CE237A1349006C0482 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				92C021A423735ED40099C015 /* NetworkService.swift */,
 				9269E7272374B287005E00F1 /* NetworkServiceProtocol.swift */,
 			);
-			path = Protocols;
+			path = Network;
+			sourceTree = "<group>";
+		};
+		921FE9CF237A134E006C0482 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				9269E7222374B216005E00F1 /* DatabaseService.swift */,
+				9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */,
+			);
+			path = Database;
+			sourceTree = "<group>";
+		};
+		9266AC9023787FC0002C87E0 /* Network API */ = {
+			isa = PBXGroup;
+			children = (
+				921FE9C4237A095D006C0482 /* ComputerNetworkApi.swift */,
+				921FE9C6237A096F006C0482 /* ComputerNetworkApiProtocol.swift */,
+				921FE9C8237A097A006C0482 /* ComputerNetworkApiProvider.swift */,
+			);
+			path = "Network API";
 			sourceTree = "<group>";
 		};
 		9291FE512371CEE100963121 = {
@@ -158,7 +200,6 @@
 				9291FE8F2371D13100963121 /* Data Models */,
 				9291FE902371D13C00963121 /* Extensions */,
 				9291FE912371D14500963121 /* Models */,
-				9269E7242374B247005E00F1 /* Protocols */,
 				9291FE952371D18000963121 /* Resources */,
 				9291FE922371D14E00963121 /* Services */,
 				9291FE932371D15B00963121 /* Storyboards */,
@@ -208,6 +249,7 @@
 			children = (
 				92C021AF23738FC60099C015 /* Date+Format.swift */,
 				9266AC9D2378A1B8002C87E0 /* UIAlertController+Show.swift */,
+				921FE9BC237A0502006C0482 /* UIScreen+Size.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -227,9 +269,9 @@
 		9291FE922371D14E00963121 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				9266AC9023787FC0002C87E0 /* REST API */,
-				92C021A423735ED40099C015 /* NetworkService.swift */,
-				9269E7222374B216005E00F1 /* DatabaseService.swift */,
+				921FE9BF237A08F0006C0482 /* API */,
+				921FE9CF237A134E006C0482 /* Database */,
+				921FE9CE237A1349006C0482 /* Network */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -410,25 +452,31 @@
 			buildActionMask = 2147483647;
 			files = (
 				9291FEA22371F67F00963121 /* Computer.swift in Sources */,
+				921FE9CD237A0A7A006C0482 /* ComputerApiProtocol.swift in Sources */,
 				9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */,
+				921FE9C9237A097A006C0482 /* ComputerNetworkApiProvider.swift in Sources */,
 				9291FE972371D31400963121 /* ComputersViewController.swift in Sources */,
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
 				92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */,
 				9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
 				9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */,
-				9266AC9A23789614002C87E0 /* ComputerApiProtocol.swift in Sources */,
 				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
 				92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */,
 				9291FEA6237204F200963121 /* ComputerDescriptionCell.swift in Sources */,
+				921FE9C5237A095D006C0482 /* ComputerNetworkApi.swift in Sources */,
+				921FE9C1237A091D006C0482 /* ComputerDatabaseApi.swift in Sources */,
 				9266AC9E2378A1B8002C87E0 /* UIAlertController+Show.swift in Sources */,
+				921FE9CB237A0A6A006C0482 /* ComputerApi.swift in Sources */,
 				9291FE9C2371EC9400963121 /* ComputerCell.swift in Sources */,
-				9266AC96237895C5002C87E0 /* ComputerApiProvider.swift in Sources */,
 				9291FEA02371F65600963121 /* Company.swift in Sources */,
 				9269E7282374B287005E00F1 /* NetworkServiceProtocol.swift in Sources */,
 				9291FE662371CEE100963121 /* ComputerDatabase.xcdatamodeld in Sources */,
-				9266AC9C2378964B002C87E0 /* ComputerApi.swift in Sources */,
+				921FE9D1237A23E4006C0482 /* ComputerApiProvider.swift in Sources */,
+				921FE9C3237A0930006C0482 /* ComputerDatabaseApiProtocol.swift in Sources */,
+				921FE9C7237A096F006C0482 /* ComputerNetworkApiProtocol.swift in Sources */,
 				92C021A523735ED40099C015 /* NetworkService.swift in Sources */,
+				921FE9BD237A0502006C0482 /* UIScreen+Size.swift in Sources */,
 				9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

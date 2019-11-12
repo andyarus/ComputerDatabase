@@ -26,7 +26,9 @@ class ComputersViewController: UIViewController {
   
   @IBOutlet weak var computersTableView: UITableView!
   @IBOutlet weak var previousButton: UIButton!
+  @IBOutlet weak var previousButtonWidthConstraint: NSLayoutConstraint!
   @IBOutlet weak var nextButton: UIButton!
+  @IBOutlet weak var nextButtonWIdthConstraint: NSLayoutConstraint!
   @IBOutlet weak var currentPageLabel: UILabel!
   
   // MARK: - View Lifecycle
@@ -43,6 +45,11 @@ class ComputersViewController: UIViewController {
   func setup() {
     /// Hide empty cells
     computersTableView.tableFooterView = UIView()
+    
+    if UIScreen.isSmall {
+      previousButtonWidthConstraint.constant = 75
+      nextButtonWIdthConstraint.constant = 75
+    }
   }
   
   // MARK: - Load Methods
@@ -84,6 +91,22 @@ class ComputersViewController: UIViewController {
   }
   
   func loadDescription() {
+    
+    
+    
+    DispatchQueue.main.async {
+      // tmp test
+      //DatabaseService().deleteData()
+      let computersTmp = DatabaseService().retrieveData()
+      print("\ncomputers.count:\(computersTmp.count)")
+//      computersTmp.forEach { computer in
+//        print("computer:\(computer)")
+//      }
+    
+    }
+    
+    
+    
     for computer in computers.values {
       computerApi.getComputer(for: computer.id, onSuccess: { [weak self] data in
         guard let self = self else { return }
@@ -105,7 +128,8 @@ class ComputersViewController: UIViewController {
     self.computers[id]?.discounted = data.discounted
     self.computers[id]?.imageUrl = data.imageUrl
     self.computers[id]?.company = data.company
-    self.computers[id]?.description = data.description
+    self.computers[id]?.description = data.description    
+    self.computers[id]?.updated = data.updated
   }
   
   @IBAction func previousButtonClicked(_ sender: Any) {
@@ -156,16 +180,19 @@ extension ComputersViewController: UITableViewDataSource {
     
     if let company = computer.company {
       cell.companyLabel.text = company.name
+      cell.companyView.isHidden = false
     } else {
       cell.companyView.isHidden = true
     }
     if let introduced = computer.introduced {
       cell.introducedLabel.text = introduced.formatted()
+      cell.introducedView.isHidden = false
     } else {
       cell.introducedView.isHidden = true
     }
     if let discounted = computer.discounted {
       cell.discontinuedLabel.text = discounted.formatted()
+      cell.discontinuedView.isHidden = false
     } else {
       cell.discontinuedView.isHidden = true
     }

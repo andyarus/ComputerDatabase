@@ -11,6 +11,7 @@ import Foundation
 protocol DatabaseServiceProtocol {
   func createData(for computer: Computer)
   func retrieveData() -> [Computer]
+  func retrieveData(by key: String) -> Computer?
   func updateData(for computer: Computer)
   func deleteData()
 }

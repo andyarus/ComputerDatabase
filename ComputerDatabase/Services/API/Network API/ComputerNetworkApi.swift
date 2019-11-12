@@ -1,17 +1,19 @@
 //
-//  ComputerApi.swift
+//  ComputerNetworkApi.swift
 //  ComputerDatabase
 //
-//  Created by Andrei Coder on 11/11/2019.
+//  Created by Andrei Coder on 12/11/2019.
 //  Copyright © 2019 yaav. All rights reserved.
 //
 
 import Foundation
 
-final class ComputerApi: NetworkService, ComputerApiProtocol {
+final class ComputerNetworkApi: NetworkService, ComputerNetworkApiProtocol {
   
-  func getComputers(for page: Int, onSuccess success: @escaping (_ data: [ComputerItem], _ page: Int, _ total: Int) -> Void, onFailure failure: @escaping (_ error: Error) -> Void) {
-    let request = URLRequest(url: ComputerApiProvider.computers(page: page).url)
+  func getComputers(for page: Int,
+                    onSuccess success: @escaping (_ data: [ComputerItem], _ page: Int, _ total: Int) -> Void,
+                    onFailure failure: @escaping (_ error: Error) -> Void) {
+    let request = URLRequest(url: ComputerNetworkApiProvider.computers(page: page).url)
     send(request, onSuccess: { data in
       do {
         let computerItemsPage = try JSONDecoder().decode(ComputerItemsPage.self, from: data)
@@ -24,13 +26,16 @@ final class ComputerApi: NetworkService, ComputerApiProtocol {
     })
   }
   
-  func getComputer(for id: Int, onSuccess success: @escaping (_ data: Computer) -> Void, onFailure failure: @escaping (_ error: Error) -> Void) {
-    let request = URLRequest(url: ComputerApiProvider.computer(id: id).url)
+  func getComputer(for id: Int,
+                   onSuccess success: @escaping (_ data: Computer) -> Void,
+                   onFailure failure: @escaping (_ error: Error) -> Void) {
+    let request = URLRequest(url: ComputerNetworkApiProvider.computer(id: id).url)
     send(request, onSuccess: { data in
       do {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        let computer = try decoder.decode(Computer.self, from: data)
+        var computer = try decoder.decode(Computer.self, from: data)
+        computer.updated = Date()
         success(computer)
       } catch {
         failure(error)
@@ -43,7 +48,7 @@ final class ComputerApi: NetworkService, ComputerApiProtocol {
   func getComputerSimilar(for id: Int,
                           onSuccess success: @escaping (_ data: [ComputerItemSimilar]) -> Void,
                           onFailure failure: @escaping (_ error: Error) -> Void) {
-    let request = URLRequest(url: ComputerApiProvider.computerSimilar(id: id).url)
+    let request = URLRequest(url: ComputerNetworkApiProvider.computerSimilar(id: id).url)
     send(request, onSuccess: { data in
       do {
         let similarItems = try JSONDecoder().decode([ComputerItemSimilar].self, from: data)

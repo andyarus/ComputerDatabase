@@ -14,10 +14,11 @@ struct Computer: Decodable {
   var introduced: Date?
   var discounted: Date?
   var imageUrl: URL?
-  var imageData: Data?
   var company: Company?
   var description: String?
   var similarItems: [ComputerItemSimilar]?
+  var imageData: Data?
+  var updated: Date?
   
   init(id: Int,
        name: String,
@@ -26,7 +27,9 @@ struct Computer: Decodable {
        imageUrl: URL? = nil,
        company: Company? = nil,
        description: String? = nil,
-       similarItems: [ComputerItemSimilar]? = nil) {
+       similarItems: [ComputerItemSimilar]? = nil,
+       imageData: Data? = nil,
+       updated: Date? = Date()) {
     self.id = id
     self.name = name
     self.introduced = introduced
@@ -35,5 +38,7 @@ struct Computer: Decodable {
     self.company = company
     self.description = description
     self.similarItems = similarItems
+    self.imageData = imageData
+    self.updated = updated
   }
 }
