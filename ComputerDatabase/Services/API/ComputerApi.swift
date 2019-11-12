@@ -23,55 +23,40 @@ class ComputerApi: ComputerApiProtocol {
                    onSuccess success: @escaping (_ data: Computer) -> Void,
                    onFailure failure: @escaping (_ error: Error) -> Void) {
     databaseApi.getComputer(for: id, onSuccess: { [weak self] computer in
-      print("databaseApi.getComputer computer:\(computer)")
-      //print("computer.updated:\(computer.updated)")
-      if let updated = computer.updated,
-        let updatedSecond = Calendar.current.dateComponents([.second], from: updated, to: Date()).second,
+      if let updatedDate = computer.updatedDate?.computer,
+        let updatedSecond = Calendar.current.dateComponents([.second], from: updatedDate, to: Date()).second,
         updatedSecond < ComputerApiProvider.computer(id: id).updatedLimit {
-
-        print("\nload saved computer")
-        
-        print("updatedSecond:\(updatedSecond)")
-        
-        
         success(computer)
       } else {
-        print("\nload new computer")
-        self?.networkApi.getComputer(for: id, onSuccess: { [weak self] computer in
-          success(computer)
-          self?.saveComputer(computer)
+        self?.networkApi.getComputer(for: id, onSuccess: { [weak self] newComputer in
+          let newComputer = newComputer
+          newComputer.updatedDate?.similarItems = computer.updatedDate?.similarItems
+          newComputer.updatedDate?.image = computer.updatedDate?.image
+          success(newComputer)
+          self?.databaseApi.saveComputer(newComputer)
         }, onFailure: failure)
       }
     }, onFailure: { [weak self] error in
-      print("\nload new computer")
-      
       self?.networkApi.getComputer(for: id, onSuccess: { [weak self] computer in
         success(computer)
-        self?.saveComputer(computer)
+        self?.databaseApi.saveComputer(computer)
       }, onFailure: failure)
     })
-  }
-  
-  func saveComputer(_ computer: Computer) {
-    databaseApi.saveComputer(computer)
   }
   
   func getComputerSimilar(for computer: Computer,
                           onSuccess success: @escaping (_ data: [ComputerItemSimilar]) -> Void,
                           onFailure failure: @escaping (_ error: Error) -> Void) {
-    
-    print()
-    print("getComputerSimilar computer.similarItems:\(computer.similarItems)")
-    
     if let similarItems = computer.similarItems,
-      let updated = computer.updated,
-      let updatedSecond = Calendar.current.dateComponents([.second], from: updated, to: Date()).second,
+      let updatedDate = computer.updatedDate?.similarItems,
+      let updatedSecond = Calendar.current.dateComponents([.second], from: updatedDate, to: Date()).second,
       updatedSecond < ComputerApiProvider.computer(id: computer.id).updatedLimit {
-      print("getComputerSimilar same")
       success(similarItems)
     } else {
-      print("getComputerSimilar new")
-      networkApi.getComputerSimilar(for: computer.id, onSuccess: success, onFailure: failure)
+      networkApi.getComputerSimilar(for: computer.id, onSuccess: { [weak self] similarItems in
+        success(similarItems)
+        self?.databaseApi.saveSimilarItems(similarItems, for: computer.id)
+      }, onFailure: failure)
     }
   }
   
@@ -79,15 +64,16 @@ class ComputerApi: ComputerApiProtocol {
                 onSuccess success: @escaping (_ data: Data) -> Void,
                 onFailure failure: @escaping (_ error: Error) -> Void) {
     if let imageData = computer.imageData,
-      let updated = computer.updated,
-      let updatedSecond = Calendar.current.dateComponents([.second], from: updated, to: Date()).second,
+      let updatedDate = computer.updatedDate?.image,
+      let updatedSecond = Calendar.current.dateComponents([.second], from: updatedDate, to: Date()).second,
       updatedSecond < ComputerApiProvider.computer(id: computer.id).updatedLimit {
-      print("getImage same")
       success(imageData)
     } else {
-      print("getImage new")
       guard let imageUrl = computer.imageUrl else { return }
-      networkApi.getImage(for: imageUrl, onSuccess: success, onFailure: failure)
+      networkApi.getImage(for: imageUrl, onSuccess: { [weak self] imageData in
+        success(imageData)
+        self?.databaseApi.saveImage(imageData, for: computer.id)
+      }, onFailure: failure)
     }
   }
   

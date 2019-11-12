@@ -39,6 +39,8 @@
 		92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021A8237376660099C015 /* ComputerItemsPage.swift */; };
 		92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021AB237382A00099C015 /* ComputerItemSimilar.swift */; };
 		92C021B023738FC60099C015 /* Date+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021AF23738FC60099C015 /* Date+Format.swift */; };
+		92D1C1A7237AEFEF0029DBC5 /* ComputerJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */; };
+		92D1C1A9237AF0340029DBC5 /* UpdatedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -97,6 +99,8 @@
 		92C021A8237376660099C015 /* ComputerItemsPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItemsPage.swift; sourceTree = "<group>"; };
 		92C021AB237382A00099C015 /* ComputerItemSimilar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerItemSimilar.swift; sourceTree = "<group>"; };
 		92C021AF23738FC60099C015 /* Date+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Format.swift"; sourceTree = "<group>"; };
+		92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerJSON.swift; sourceTree = "<group>"; };
+		92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedDate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -136,11 +140,11 @@
 		921FE9BF237A08F0006C0482 /* API */ = {
 			isa = PBXGroup;
 			children = (
-				921FE9BE237A08DD006C0482 /* Database API */,
-				9266AC9023787FC0002C87E0 /* Network API */,
 				921FE9CA237A0A6A006C0482 /* ComputerApi.swift */,
 				921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */,
 				921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */,
+				921FE9BE237A08DD006C0482 /* Database API */,
+				9266AC9023787FC0002C87E0 /* Network API */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -262,6 +266,8 @@
 				9291FE9D2371F5FE00963121 /* ComputerItem.swift */,
 				92C021AB237382A00099C015 /* ComputerItemSimilar.swift */,
 				92C021A8237376660099C015 /* ComputerItemsPage.swift */,
+				92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */,
+				92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -459,6 +465,7 @@
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
 				92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */,
 				9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */,
+				92D1C1A7237AEFEF0029DBC5 /* ComputerJSON.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
 				9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */,
 				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
@@ -476,6 +483,7 @@
 				921FE9C3237A0930006C0482 /* ComputerDatabaseApiProtocol.swift in Sources */,
 				921FE9C7237A096F006C0482 /* ComputerNetworkApiProtocol.swift in Sources */,
 				92C021A523735ED40099C015 /* NetworkService.swift in Sources */,
+				92D1C1A9237AF0340029DBC5 /* UpdatedDate.swift in Sources */,
 				921FE9BD237A0502006C0482 /* UIScreen+Size.swift in Sources */,
 				9291FE9E2371F5FE00963121 /* ComputerItem.swift in Sources */,
 			);

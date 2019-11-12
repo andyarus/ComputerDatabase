@@ -34,8 +34,17 @@ final class ComputerNetworkApi: NetworkService, ComputerNetworkApiProtocol {
       do {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
-        var computer = try decoder.decode(Computer.self, from: data)
-        computer.updated = Date()
+        let computerJSON = try decoder.decode(ComputerJSON.self, from: data)
+        let computer = Computer(id: computerJSON.id,
+                                name: computerJSON.name,
+                                introduced: computerJSON.introduced,
+                                discounted: computerJSON.discounted,
+                                imageUrl: computerJSON.imageUrl,
+                                company: computerJSON.company,
+                                description: computerJSON.description,
+                                similarItems: nil,
+                                imageData: nil,
+                                updatedDate: UpdatedDate(computer: Date()))
         success(computer)
       } catch {
         failure(error)

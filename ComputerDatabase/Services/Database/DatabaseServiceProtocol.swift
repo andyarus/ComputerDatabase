@@ -13,5 +13,7 @@ protocol DatabaseServiceProtocol {
   func retrieveData() -> [Computer]
   func retrieveData(by key: String) -> Computer?
   func updateData(for computer: Computer)
+  func updateData(for id: Int, with similarItems: [ComputerItemSimilar])
+  func updateData(for id: Int, with imageData: Data)
   func deleteData()
 }

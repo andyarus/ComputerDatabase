@@ -25,8 +25,9 @@ class DatabaseService: DatabaseServiceProtocol {
     computerManagedObject.introduced = computer.introduced
     computerManagedObject.discounted = computer.discounted
     computerManagedObject.imageUrl = computer.imageUrl
+    computerManagedObject.image = computer.imageData
     computerManagedObject.descr = computer.description
-    computerManagedObject.updatedDate = computer.updated
+    computerManagedObject.updatedDate = computer.updatedDate
     
     if let company = computer.company,
       let companyEntityDescription = NSEntityDescription.entity(forEntityName: "CompanyEntity", in: managedObjectContext),
@@ -93,7 +94,8 @@ class DatabaseService: DatabaseServiceProtocol {
                                        company: company,
                                        description: managedObject.descr,
                                        similarItems: similarItems.isEmpty ? nil : similarItems,
-                                       updated: managedObject.updatedDate)
+                                       imageData: managedObject.image,
+                                       updatedDate: managedObject.updatedDate)
         
         entities.append(retrievedEntity)
       }
@@ -144,7 +146,8 @@ class DatabaseService: DatabaseServiceProtocol {
                                      company: company,
                                      description: managedObject.descr,
                                      similarItems: similarItems.isEmpty ? nil : similarItems,
-                                     updated: managedObject.updatedDate)
+                                     imageData: managedObject.image,
+                                     updatedDate: managedObject.updatedDate)
       return retrievedEntity
     } catch {
       print("Data retrieving failed: \(error)")
@@ -166,13 +169,14 @@ class DatabaseService: DatabaseServiceProtocol {
       guard let managedObjects = result as? [ComputerEntity],
         let computerManagedObject = managedObjects.first else { return }
       
-      computerManagedObject.id = Int32(computer.id)
+      //computerManagedObject.id = Int32(computer.id) // don't update id
       computerManagedObject.name = computer.name
       computerManagedObject.introduced = computer.introduced
       computerManagedObject.discounted = computer.discounted
       computerManagedObject.imageUrl = computer.imageUrl
+      //computerManagedObject.image = computer.imageData // updated in special method
       computerManagedObject.descr = computer.description
-      computerManagedObject.updatedDate = computer.updated
+      computerManagedObject.updatedDate?.computer = computer.updatedDate?.computer
       
       if let company = computer.company {
         computerManagedObject.company?.id = Int32(company.id)
@@ -180,16 +184,35 @@ class DatabaseService: DatabaseServiceProtocol {
         computerManagedObject.company?.computer = computerManagedObject
       }
       
+      try managedObjectContext.save()
+    } catch {
+      print("Data updating failed: \(error)")
+    }
+  }
+  
+  /// Update data with similarItems
+  func updateData(for id: Int, with similarItems: [ComputerItemSimilar]) {
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    let managedObjectContext = appDelegate.persistentContainer.viewContext
+    
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ComputerEntity")
+    fetchRequest.predicate = NSPredicate(format: "id = %@", String(id))
+    
+    do {
+      let result = try managedObjectContext.fetch(fetchRequest)
+      guard let managedObjects = result as? [ComputerEntity],
+        let computerManagedObject = managedObjects.first else { return }
+      
+      computerManagedObject.updatedDate?.similarItems = Date()
+      
       /// Clear saved entities
       if let similarItemsEntities = computerManagedObject.similarItems?.allObjects as? [ComputerItemSimilarEntity] {
         for similarItemEntity in similarItemsEntities {
           managedObjectContext.delete(similarItemEntity)
         }
       }
-      
       /// Add new entities
-      if let similarItems = computer.similarItems,
-        let similarItemEntityDescription = NSEntityDescription.entity(forEntityName: "ComputerItemSimilarEntity", in: managedObjectContext) {
+      if let similarItemEntityDescription = NSEntityDescription.entity(forEntityName: "ComputerItemSimilarEntity", in: managedObjectContext) {
         for similarItem in similarItems {
           guard let similarItemManagedObject = NSManagedObject(entity: similarItemEntityDescription, insertInto: managedObjectContext) as? ComputerItemSimilarEntity else { return }
           similarItemManagedObject.id = Int32(similarItem.id)
@@ -197,6 +220,28 @@ class DatabaseService: DatabaseServiceProtocol {
           similarItemManagedObject.computer = computerManagedObject
         }
       }
+      
+      try managedObjectContext.save()
+    } catch {
+      print("Data updating failed: \(error)")
+    }
+  }
+  
+  /// Update data with imageData
+  func updateData(for id: Int, with imageData: Data) {
+    guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+    let managedObjectContext = appDelegate.persistentContainer.viewContext
+    
+    let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "ComputerEntity")
+    fetchRequest.predicate = NSPredicate(format: "id = %@", String(id))
+    
+    do {
+      let result = try managedObjectContext.fetch(fetchRequest)
+      guard let managedObjects = result as? [ComputerEntity],
+        let computerManagedObject = managedObjects.first else { return }
+      
+      computerManagedObject.image = imageData
+      computerManagedObject.updatedDate?.image = Date()
       
       try managedObjectContext.save()
     } catch {

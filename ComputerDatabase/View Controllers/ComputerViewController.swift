@@ -89,10 +89,6 @@ class ComputerViewController: UIViewController {
       DispatchQueue.main.async {
         self.computerTableView.reloadData()
       }      
-      /// Update
-      if let computer = self.computer {
-        self.computerApi.saveComputer(computer)
-      }
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
     })
@@ -101,11 +97,10 @@ class ComputerViewController: UIViewController {
   func loadImage() {
     // TODO Kingfisher
     guard let computer = computer else { return }
-    //guard let imageUrl = computer?.imageUrl else { return }
-    computerApi.getImage(for: computer, onSuccess: { [weak self] data in
+    computerApi.getImage(for: computer, onSuccess: { [weak self] imageData in
       guard let self = self,
-        let _ = UIImage(data: data) else { return }
-      self.computer?.imageData = data
+        let _ = UIImage(data: imageData) else { return }
+      self.computer?.imageData = imageData
       DispatchQueue.main.async {
         self.computerTableView.reloadData()
       }

@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Computer: Decodable {
+struct Computer {
   let id: Int
   let name: String
   var introduced: Date?
@@ -16,9 +16,10 @@ struct Computer: Decodable {
   var imageUrl: URL?
   var company: Company?
   var description: String?
+  
   var similarItems: [ComputerItemSimilar]?
   var imageData: Data?
-  var updated: Date?
+  var updatedDate: UpdatedDate?
   
   init(id: Int,
        name: String,
@@ -29,7 +30,7 @@ struct Computer: Decodable {
        description: String? = nil,
        similarItems: [ComputerItemSimilar]? = nil,
        imageData: Data? = nil,
-       updated: Date? = Date()) {
+       updatedDate: UpdatedDate? = nil) {
     self.id = id
     self.name = name
     self.introduced = introduced
@@ -39,6 +40,6 @@ struct Computer: Decodable {
     self.description = description
     self.similarItems = similarItems
     self.imageData = imageData
-    self.updated = updated
+    self.updatedDate = updatedDate
   }
 }

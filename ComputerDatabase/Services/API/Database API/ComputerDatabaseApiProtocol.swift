@@ -12,5 +12,7 @@ protocol ComputerDatabaseApiProtocol {
   func getComputer(for id: Int,
                    onSuccess success: @escaping (_ data: Computer) -> Void,
                    onFailure failure: @escaping (_ error: Error) -> Void)
-  func saveComputer(_ computer: Computer)
+  func saveComputer(_ computer: Computer)  
+  func saveSimilarItems(_ similarItems: [ComputerItemSimilar], for id: Int)
+  func saveImage(_ imageData: Data, for id: Int)
 }

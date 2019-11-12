@@ -15,7 +15,6 @@ protocol ComputerApiProtocol {
   func getComputer(for id: Int,
                    onSuccess success: @escaping (_ data: Computer) -> Void,
                    onFailure failure: @escaping (_ error: Error) -> Void)
-  func saveComputer(_ computer: Computer)
   func getComputerSimilar(for computer: Computer,
                           onSuccess success: @escaping (_ data: [ComputerItemSimilar]) -> Void,
                           onFailure failure: @escaping (_ error: Error) -> Void)

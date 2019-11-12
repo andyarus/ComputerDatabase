@@ -25,16 +25,24 @@ final class ComputerDatabaseApi: DatabaseService, ComputerDatabaseApiProtocol {
   }
   
   func saveComputer(_ computer: Computer) {
-    // TODO UIApplication.shared.delegate requires main thread
     DispatchQueue.main.async { [weak self] in
-      print("saveComputer:\(computer)")
       if let _ = self?.retrieveData(by: String(computer.id)) {
-        print("update")
         self?.updateData(for: computer)
       } else {
-        print("createData")
         self?.createData(for: computer)
       }
+    }
+  }
+  
+  func saveSimilarItems(_ similarItems: [ComputerItemSimilar], for id: Int) {
+    DispatchQueue.main.async { [weak self] in
+      self?.updateData(for: id, with: similarItems)
+    }
+  }
+  
+  func saveImage(_ imageData: Data, for id: Int) {
+    DispatchQueue.main.async { [weak self] in
+      self?.updateData(for: id, with: imageData)
     }
   }
   

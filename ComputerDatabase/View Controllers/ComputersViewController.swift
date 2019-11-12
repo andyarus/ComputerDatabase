@@ -90,23 +90,7 @@ class ComputersViewController: UIViewController {
     })
   }
   
-  func loadDescription() {
-    
-    
-    
-    DispatchQueue.main.async {
-      // tmp test
-      //DatabaseService().deleteData()
-      let computersTmp = DatabaseService().retrieveData()
-      print("\ncomputers.count:\(computersTmp.count)")
-//      computersTmp.forEach { computer in
-//        print("computer:\(computer)")
-//      }
-    
-    }
-    
-    
-    
+  func loadDescription() {    
     for computer in computers.values {
       computerApi.getComputer(for: computer.id, onSuccess: { [weak self] data in
         guard let self = self else { return }
@@ -129,7 +113,7 @@ class ComputersViewController: UIViewController {
     self.computers[id]?.imageUrl = data.imageUrl
     self.computers[id]?.company = data.company
     self.computers[id]?.description = data.description    
-    self.computers[id]?.updated = data.updated
+    self.computers[id]?.updatedDate = data.updatedDate
   }
   
   @IBAction func previousButtonClicked(_ sender: Any) {

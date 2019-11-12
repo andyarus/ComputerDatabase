@@ -17,7 +17,7 @@ extension ComputerApiProvider {
   var updatedLimit: Int {
     switch self {
     case .computer:
-      return 10
+      return 60
     }
   }
   
