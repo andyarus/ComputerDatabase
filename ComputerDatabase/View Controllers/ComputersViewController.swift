@@ -12,15 +12,7 @@ class ComputersViewController: UIViewController {
   
   // MARK: - Properties
   
-  private var currentPage = 0
-  private var itemsPerPage = 0
-  private var totalPages = 0
-  
-  private var computers: [Int: Computer] = [:] // computer.id: computer
-  private var rowId: [Int: Int] = [:]          // tableView row: computer.id
-  private var idRow: [Int: Int] = [:]          // computer.id: tableView row
-  
-  private let computerApi = ComputerApi()
+  private let viewModel = ComputersViewModel()
   
   // MARK: - Outlets
   
@@ -37,7 +29,8 @@ class ComputersViewController: UIViewController {
     super.viewDidLoad()
     
     setup()
-    loadComputers(for: currentPage)
+    
+    load(for: viewModel.currentPage)
   }
   
   // MARK: - Setup Methods
@@ -54,71 +47,52 @@ class ComputersViewController: UIViewController {
   
   // MARK: - Load Methods
   
-  func loadComputers(for page: Int) {
-    computers.removeAll()
-    rowId.removeAll()
-    idRow.removeAll()
-    
-    computerApi.getComputers(for: page, onSuccess: { [weak self] (computerItems, page, total) in
-      guard let self = self else { return }
-      for computerItem in computerItems {
-        let computer = Computer(id: computerItem.id,
-                                name: computerItem.name)
-        self.computers[computer.id] = computer
-        let row = self.rowId.count
-        self.rowId[row] = computer.id
-        self.idRow[computer.id] = row
-      }
-      
-      if page == 0, computerItems.count > 0, computerItems.count != self.itemsPerPage {
-        self.itemsPerPage = computerItems.count
-        self.totalPages = Int(total/self.itemsPerPage) + 1
-      }
-      self.currentPage = page
-      let currentPageDescription = "Page \(page+1) of \(self.totalPages)"
-      
-      DispatchQueue.main.async {
-        self.computersTableView.reloadData()
-        self.currentPageLabel.text = currentPageDescription
-      }
-      
+  func load(for page: Int) {
+    let loadComputersOperation = BlockOperation {
+      self.loadComputers(for: page)
+    }
+    let loadDescriptionOperation = BlockOperation {
       self.loadDescription()
+    }
+    loadDescriptionOperation.addDependency(loadComputersOperation)
+
+    let operationQueue = OperationQueue()
+    operationQueue.addOperation(loadComputersOperation)
+    operationQueue.addOperation(loadDescriptionOperation)
+  }
+  
+  func loadComputers(for page: Int) {
+    let group = DispatchGroup()
+    group.enter()
+    
+    viewModel.loadComputers(for: page, onSuccess: { [weak self] text in
+      self?.computersTableView.reloadData()
+      self?.currentPageLabel.text = text
+      
+      group.leave()
     }, onFailure: { [weak self] error in
       guard let self = self else { return }
-      UIAlertController(title: "Error", message: "Сould not get the list of computers", preferredStyle: .alert).show(in: self)
-      print("request error: \(error.localizedDescription)")
+      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
+      
+      group.leave()
+    })
+    
+    group.wait()
+  }
+  
+  func loadDescription() {
+    guard viewModel.numberOfComputers > 0 else { return }    
+    viewModel.loadDescription(onSuccess: { [weak self] indexPath in
+      self?.computersTableView.reloadRows(at: [indexPath], with: .fade)
+    }, onFailure: { [weak self] error in
+      guard let self = self else { return }
+      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
     })
   }
   
-  func loadDescription() {    
-    for computer in computers.values {
-      computerApi.getComputer(for: computer.id, onSuccess: { [weak self] data in
-        guard let self = self else { return }
-        self.updateComputer(for: computer.id, with: data)
-        DispatchQueue.main.async {
-          if let row = self.idRow[computer.id] {
-            let indexPath = IndexPath(item: row, section: 0)
-            self.computersTableView.reloadRows(at: [indexPath], with: .fade)
-          }
-        }
-      }, onFailure: { error in
-        print("request error: \(error.localizedDescription) for computer:\(computer)")
-      })
-    }
-  }
-  
-  func updateComputer(for id: Int, with data: Computer) {
-    self.computers[id]?.introduced = data.introduced
-    self.computers[id]?.discounted = data.discounted
-    self.computers[id]?.imageUrl = data.imageUrl
-    self.computers[id]?.company = data.company
-    self.computers[id]?.description = data.description    
-    self.computers[id]?.updatedDate = data.updatedDate
-  }
-  
   @IBAction func previousButtonClicked(_ sender: Any) {
-    let previousPage = currentPage - 1
-    guard previousPage >= 0, previousPage < self.totalPages else { return }
+    let previousPage = viewModel.currentPage - 1
+    guard previousPage >= 0, previousPage < viewModel.totalPages else { return }
     if previousPage == 0 {
       previousButton.isEnabled = false
       previousButton.alpha = 0.5
@@ -127,12 +101,13 @@ class ComputersViewController: UIViewController {
       nextButton.isEnabled = true
       nextButton.alpha = 1.0
     }
-    loadComputers(for: previousPage)
+    
+    load(for: previousPage)
   }
   
   @IBAction func nextButtonClicked(_ sender: Any) {
-    let nextPage = currentPage + 1
-    guard nextPage > 0, nextPage < self.totalPages else {
+    let nextPage = viewModel.currentPage + 1
+    guard nextPage > 0, nextPage < viewModel.totalPages else {
       nextButton.isEnabled = false
       nextButton.alpha = 0.5
       return
@@ -141,7 +116,8 @@ class ComputersViewController: UIViewController {
       previousButton.isEnabled = true
       previousButton.alpha = 1.0
     }
-    loadComputers(for: nextPage)
+    
+    load(for: nextPage)
   }
   
 }
@@ -151,35 +127,13 @@ class ComputersViewController: UIViewController {
 extension ComputersViewController: UITableViewDataSource {
   
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return rowId.count
+    return viewModel.numberOfComputers
   }
   
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "ComputerCell", for: indexPath) as! ComputerCell
     
-    guard let id = rowId[indexPath.row],
-      let computer = computers[id] else { return cell }
-    
-    cell.computerNameLabel.text = computer.name
-    
-    if let company = computer.company {
-      cell.companyLabel.text = company.name
-      cell.companyView.isHidden = false
-    } else {
-      cell.companyView.isHidden = true
-    }
-    if let introduced = computer.introduced {
-      cell.introducedLabel.text = introduced.formatted()
-      cell.introducedView.isHidden = false
-    } else {
-      cell.introducedView.isHidden = true
-    }
-    if let discounted = computer.discounted {
-      cell.discontinuedLabel.text = discounted.formatted()
-      cell.discontinuedView.isHidden = false
-    } else {
-      cell.discontinuedView.isHidden = true
-    }
+    viewModel.configure(cell, in: indexPath.row)
     
     return cell
   }
@@ -194,8 +148,7 @@ extension ComputersViewController: UITableViewDelegate {
     let sb = UIStoryboard.init(name: "Main", bundle: nil)
     guard let vc = sb.instantiateViewController(withIdentifier: "ComputerViewController") as? ComputerViewController else { return }
     
-    guard let id = rowId[indexPath.row],
-      let computer = computers[id] else { return }
+    guard let computer = viewModel.computer(in: indexPath.row) else { return }
     
     vc.computer = computer
     navigationController?.pushViewController(vc, animated: true)

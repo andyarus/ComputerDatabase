@@ -41,6 +41,7 @@
 		92C021B023738FC60099C015 /* Date+Format.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92C021AF23738FC60099C015 /* Date+Format.swift */; };
 		92D1C1A7237AEFEF0029DBC5 /* ComputerJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */; };
 		92D1C1A9237AF0340029DBC5 /* UpdatedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */; };
+		92D1C1B0237B4A530029DBC5 /* ComputersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -101,6 +102,7 @@
 		92C021AF23738FC60099C015 /* Date+Format.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Format.swift"; sourceTree = "<group>"; };
 		92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerJSON.swift; sourceTree = "<group>"; };
 		92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedDate.swift; sourceTree = "<group>"; };
+		92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputersViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -209,6 +211,7 @@
 				9291FE932371D15B00963121 /* Storyboards */,
 				92C021AA2373811B0099C015 /* Supporting Files */,
 				9291FE942371D16300963121 /* View Controllers */,
+				92D1C1AC237B42200029DBC5 /* View Models */,
 				9291FE9A2371EC7000963121 /* Views */,
 			);
 			path = ComputerDatabase;
@@ -324,6 +327,14 @@
 				9291FE6C2371CEE200963121 /* Info.plist */,
 			);
 			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		92D1C1AC237B42200029DBC5 /* View Models */ = {
+			isa = PBXGroup;
+			children = (
+				92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */,
+			);
+			path = "View Models";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -469,6 +480,7 @@
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
 				9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */,
 				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
+				92D1C1B0237B4A530029DBC5 /* ComputersViewModel.swift in Sources */,
 				92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */,
 				9291FEA6237204F200963121 /* ComputerDescriptionCell.swift in Sources */,
 				921FE9C5237A095D006C0482 /* ComputerNetworkApi.swift in Sources */,
