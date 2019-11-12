@@ -148,9 +148,9 @@ extension ComputersViewController: UITableViewDelegate {
     let sb = UIStoryboard.init(name: "Main", bundle: nil)
     guard let vc = sb.instantiateViewController(withIdentifier: "ComputerViewController") as? ComputerViewController else { return }
     
-    guard let computer = viewModel.computer(in: indexPath.row) else { return }
+    guard let computer = viewModel.computer(in: indexPath.row) else { return }    
+    vc.setupComputer(computer)
     
-    vc.computer = computer
     navigationController?.pushViewController(vc, animated: true)
   }
   

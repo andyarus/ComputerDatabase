@@ -29,15 +29,11 @@ final class ComputersViewModel {
   }
   
   public var currentPage: Int {
-    get {
-      return currentPageValue
-    }
+    return currentPageValue
   }
   
   public var totalPages: Int {
-    get {
-      return totalPagesValue
-    }
+    return totalPagesValue
   }
   
   // MARK: - Access Methods

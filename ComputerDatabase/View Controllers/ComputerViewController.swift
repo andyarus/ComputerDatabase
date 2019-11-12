@@ -12,9 +12,7 @@ class ComputerViewController: UIViewController {
   
   // MARK: - Properties
   
-  var computer: Computer?
-  
-  private let computerApi = ComputerApi()
+  private let viewModel = ComputerViewModel()
   
   // MARK: - Outlets
   
@@ -28,14 +26,23 @@ class ComputerViewController: UIViewController {
     reload()
   }
   
-  // MARK: - Setup Method
+  // MARK: - Setup Methods
+  
+  func setupComputer(_ computer: Computer?) {
+    viewModel.computer = computer
+  }
   
   func setup() {
-    navigationItem.title = computer?.name
+    navigationItem.title = viewModel.computer?.name
   }
   
   // MARK: - Load Methods
   
+  func reload() {
+    setup()
+    load()
+  }
+
   func load() {
     let loadComputerOperation = BlockOperation {
       self.loadComputer()
@@ -48,7 +55,7 @@ class ComputerViewController: UIViewController {
     }
     loadSimilarItemsOperation.addDependency(loadComputerOperation)
     loadImageOperation.addDependency(loadComputerOperation)
-    
+
     let operationQueue = OperationQueue()
     operationQueue.addOperation(loadComputerOperation)
     operationQueue.addOperation(loadSimilarItemsOperation)
@@ -56,24 +63,16 @@ class ComputerViewController: UIViewController {
   }
   
   func loadComputer() {
-    guard let computer = computer else { return }
-    
     let group = DispatchGroup()
     group.enter()
     
-    computerApi.getComputer(for: computer.id, onSuccess: { [weak self] computer in
-      guard let self = self else { return }
-      self.computer = computer
+    viewModel.loadComputer(onSuccess: { [weak self] in
+      self?.computerTableView.reloadData()
       
       group.leave()
-      
-      DispatchQueue.main.async {
-        self.computerTableView.reloadData()
-      }
     }, onFailure: { [weak self] error in
       guard let self = self else { return }
-      UIAlertController(title: "Error", message: "Сould not get the computer description", preferredStyle: .alert).show(in: self)
-      print("request error: \(error.localizedDescription)")
+      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
       
       group.leave()
     })
@@ -82,36 +81,15 @@ class ComputerViewController: UIViewController {
   }
   
   func loadSimilarItems() {
-    guard let computer = computer else { return }
-    computerApi.getComputerSimilar(for: computer, onSuccess: { [weak self] similarItems in
-      guard let self = self else { return }
-      self.computer?.similarItems = similarItems
-      DispatchQueue.main.async {
-        self.computerTableView.reloadData()
-      }      
-    }, onFailure: { error in
-      print("request error: \(error.localizedDescription)")
-    })
+    viewModel.loadSimilarItems(onSuccess: { [weak self] in
+      self?.computerTableView.reloadData()
+    }, onFailure: { _ in })
   }
   
   func loadImage() {
-    // TODO Kingfisher
-    guard let computer = computer else { return }
-    computerApi.getImage(for: computer, onSuccess: { [weak self] imageData in
-      guard let self = self,
-        let _ = UIImage(data: imageData) else { return }
-      self.computer?.imageData = imageData
-      DispatchQueue.main.async {
-        self.computerTableView.reloadData()
-      }
-    }, onFailure: { error in
-      print("request error: \(error.localizedDescription)")
-    })
-  }
-  
-  func reload() {
-    setup()
-    load()
+    viewModel.loadImage(onSuccess: { [weak self] in
+      self?.computerTableView.reloadData()
+    }, onFailure: { _ in })
   }
   
 }
@@ -127,48 +105,15 @@ extension ComputerViewController: UITableViewDataSource {
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: "ComputerDescriptionCell", for: indexPath) as! ComputerDescriptionCell
     
-    guard let computer = computer else { return cell }
+    viewModel.configure(cell)
     
-    cell.selectionStyle = .none
-    
-    if let company = computer.company {
-      cell.companyLabel.text = company.name
-      cell.companyView.isHidden = false
-    } else {
-      cell.companyView.isHidden = true
-    }
-    if let introduced = computer.introduced {
-      cell.introducedLabel.text = introduced.formatted()
-      cell.introducedView.isHidden = false
-    } else {
-      cell.introducedView.isHidden = true
-    }
-    if let discounted = computer.discounted {
-      cell.discontinuedLabel.text = discounted.formatted()
-      cell.discontinuedView.isHidden = false
-    } else {
-      cell.discontinuedView.isHidden = true
-    }
-    if let description = computer.description {
-      cell.descriptionLabel.text = cell.isExpanded ? description : "\(String(description.prefix(80)))..."
-      if cell.descriptionView.gestureRecognizers == nil {
+    if let _ = viewModel.computer?.description,
+      cell.descriptionView.gestureRecognizers == nil {
         cell.descriptionView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.descriptionViewClicked(_:))))
-      }
-      cell.descriptionView.isHidden = false
-    } else {
-      cell.descriptionView.isHidden = true
     }
-    if let imageData = computer.imageData {
-      cell.computerImageView.image = UIImage(data: imageData)
-      cell.computerImageView.isHidden = false
-    } else {
-      cell.computerImageView.isHidden = true
-    }
-    if let similarItems = computer.similarItems, similarItems.count > 0 {
+    
+    if let similarItems = viewModel.computer?.similarItems, similarItems.count > 0 {
       addSubviews(similarItems, to: cell)
-      cell.similarItemsView.isHidden = false
-    } else {
-      cell.similarItemsView.isHidden = true
     }
     
     return cell
@@ -195,7 +140,7 @@ extension ComputerViewController {
   
   @objc
   func similarItemButtonClicked(_ sender: SimilarItemButton) {
-    computer = sender.computer
+    viewModel.computer = sender.computer
     reload()
   }
   

@@ -42,6 +42,7 @@
 		92D1C1A7237AEFEF0029DBC5 /* ComputerJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */; };
 		92D1C1A9237AF0340029DBC5 /* UpdatedDate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */; };
 		92D1C1B0237B4A530029DBC5 /* ComputersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */; };
+		92D1C1B2237B55A10029DBC5 /* ComputerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92D1C1B1237B55A10029DBC5 /* ComputerViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +104,7 @@
 		92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerJSON.swift; sourceTree = "<group>"; };
 		92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatedDate.swift; sourceTree = "<group>"; };
 		92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputersViewModel.swift; sourceTree = "<group>"; };
+		92D1C1B1237B55A10029DBC5 /* ComputerViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -333,6 +335,7 @@
 			isa = PBXGroup;
 			children = (
 				92D1C1AF237B4A530029DBC5 /* ComputersViewModel.swift */,
+				92D1C1B1237B55A10029DBC5 /* ComputerViewModel.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -479,6 +482,7 @@
 				92D1C1A7237AEFEF0029DBC5 /* ComputerJSON.swift in Sources */,
 				9291FE5E2371CEE100963121 /* AppDelegate.swift in Sources */,
 				9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */,
+				92D1C1B2237B55A10029DBC5 /* ComputerViewModel.swift in Sources */,
 				92C021B023738FC60099C015 /* Date+Format.swift in Sources */,
 				92D1C1B0237B4A530029DBC5 /* ComputersViewModel.swift in Sources */,
 				92C021A9237376660099C015 /* ComputerItemsPage.swift in Sources */,
