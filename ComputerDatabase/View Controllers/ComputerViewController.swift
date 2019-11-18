@@ -23,73 +23,43 @@ class ComputerViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    reload()
+    setupUI()
+    setupViewModel()
+    
+    loadData()
   }
   
   // MARK: - Setup Methods
   
-  func setupComputer(_ computer: Computer?) {
-    viewModel.computer = computer
+  private func setupViewModel() {
+    viewModel
+      .onDataLoaded { [weak self] row in
+        self?.computerTableView.reloadData()
+        //self?.computerTableView.reloadRows(at: [IndexPath(item: row, section: 0)], with: .fade)
+      }
+      .onError { [weak self] error in
+        guard let self = self else { return }
+        UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
+    }
   }
   
-  func setup() {
+  private func setupUI() {
     navigationItem.title = viewModel.computer?.name
+  }
+  
+  public func setupComputer(_ computer: Computer?) {
+    viewModel.computer = computer
   }
   
   // MARK: - Load Methods
   
-  func reload() {
-    setup()
-    load()
-  }
-
-  func load() {
-    let loadComputerOperation = BlockOperation {
-      self.loadComputer()
-    }
-    let loadSimilarItemsOperation = BlockOperation {
-      self.loadSimilarItems()
-    }
-    let loadImageOperation = BlockOperation {
-      self.loadImage()
-    }
-    loadSimilarItemsOperation.addDependency(loadComputerOperation)
-    loadImageOperation.addDependency(loadComputerOperation)
-
-    let operationQueue = OperationQueue()
-    operationQueue.addOperation(loadComputerOperation)
-    operationQueue.addOperation(loadSimilarItemsOperation)
-    operationQueue.addOperation(loadImageOperation)
+  private func reload() {
+    setupUI()
+    loadData()
   }
   
-  func loadComputer() {
-    let group = DispatchGroup()
-    group.enter()
-    
-    viewModel.loadComputer(onSuccess: { [weak self] in
-      self?.computerTableView.reloadData()
-      
-      group.leave()
-    }, onFailure: { [weak self] error in
-      guard let self = self else { return }
-      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
-      
-      group.leave()
-    })
-    
-    group.wait()
-  }
-  
-  func loadSimilarItems() {
-    viewModel.loadSimilarItems(onSuccess: { [weak self] in
-      self?.computerTableView.reloadData()
-    }, onFailure: { _ in })
-  }
-  
-  func loadImage() {
-    viewModel.loadImage(onSuccess: { [weak self] in
-      self?.computerTableView.reloadData()
-    }, onFailure: { _ in })
+  private func loadData() {
+    viewModel.load()
   }
   
 }

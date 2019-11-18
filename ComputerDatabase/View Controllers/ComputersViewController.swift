@@ -28,14 +28,15 @@ class ComputersViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     
-    setup()
+    setupUI()
+    setupViewModel()
     
-    load(for: viewModel.currentPage)
+    loadData()
   }
   
   // MARK: - Setup Methods
   
-  func setup() {
+  private func setupUI() {
     /// Hide empty cells
     computersTableView.tableFooterView = UIView()
     
@@ -45,79 +46,43 @@ class ComputersViewController: UIViewController {
     }
   }
   
+  private func setupViewModel() {
+    viewModel
+      .onComputersLoaded { [weak self] in
+        self?.computersTableView.reloadData()
+      }
+      .onDescriptionLoaded { [weak self] indexPath in
+        self?.computersTableView.reloadRows(at: [indexPath], with: .fade)
+      }
+      .onCurrentPageChanged { [weak self] text in
+        self?.currentPageLabel.text = text
+      }
+      .onError { [weak self] error in
+        guard let self = self else { return }
+        UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
+      }
+      .onPreviousButtonEnabled { [weak self] enabled in
+        self?.previousButton.isEnabled = enabled
+        self?.previousButton.alpha = enabled ? 1.0 : 0.5
+      }
+      .onNextButtonEnabled { [weak self] enabled in
+        self?.nextButton.isEnabled = enabled
+        self?.nextButton.alpha = enabled ? 1.0 : 0.5
+    }
+  }
+  
   // MARK: - Load Methods
   
-  func load(for page: Int) {
-    let loadComputersOperation = BlockOperation {
-      self.loadComputers(for: page)
-    }
-    let loadDescriptionOperation = BlockOperation {
-      self.loadDescription()
-    }
-    loadDescriptionOperation.addDependency(loadComputersOperation)
-
-    let operationQueue = OperationQueue()
-    operationQueue.addOperation(loadComputersOperation)
-    operationQueue.addOperation(loadDescriptionOperation)
-  }
-  
-  func loadComputers(for page: Int) {
-    let group = DispatchGroup()
-    group.enter()
-    
-    viewModel.loadComputers(for: page, onSuccess: { [weak self] text in
-      self?.computersTableView.reloadData()
-      self?.currentPageLabel.text = text
-      
-      group.leave()
-    }, onFailure: { [weak self] error in
-      guard let self = self else { return }
-      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
-      
-      group.leave()
-    })
-    
-    group.wait()
-  }
-  
-  func loadDescription() {
-    guard viewModel.numberOfComputers > 0 else { return }    
-    viewModel.loadDescription(onSuccess: { [weak self] indexPath in
-      self?.computersTableView.reloadRows(at: [indexPath], with: .fade)
-    }, onFailure: { [weak self] error in
-      guard let self = self else { return }
-      UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert).show(in: self)
-    })
+  private func loadData() {
+    viewModel.load()
   }
   
   @IBAction func previousButtonClicked(_ sender: Any) {
-    let previousPage = viewModel.currentPage - 1
-    guard previousPage >= 0, previousPage < viewModel.totalPages else { return }
-    if previousPage == 0 {
-      previousButton.isEnabled = false
-      previousButton.alpha = 0.5
-    }
-    if !nextButton.isEnabled {
-      nextButton.isEnabled = true
-      nextButton.alpha = 1.0
-    }
-    
-    load(for: previousPage)
+    viewModel.previous()
   }
   
   @IBAction func nextButtonClicked(_ sender: Any) {
-    let nextPage = viewModel.currentPage + 1
-    guard nextPage > 0, nextPage < viewModel.totalPages else {
-      nextButton.isEnabled = false
-      nextButton.alpha = 0.5
-      return
-    }
-    if nextPage == 1 {
-      previousButton.isEnabled = true
-      previousButton.alpha = 1.0
-    }
-    
-    load(for: nextPage)
+    viewModel.next()
   }
   
 }

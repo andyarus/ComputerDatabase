@@ -17,6 +17,11 @@ final class ComputerViewModel {
   
   private var computerValue: Computer?
   
+  // MARK: - Callbacks
+  
+  private var onDataLoadedCallback: ((Int) -> Void)?
+  private var onErrorCallback: ((Error) -> Void)?
+  
   // MARK: - Access Properties
   
   public var computer: Computer? {
@@ -28,45 +33,72 @@ final class ComputerViewModel {
     }
   }
   
+  // MARK: - Access Methods
+  
+  public func load() {
+    loadOperationQueue()
+  }
+  
+  // MARK: - Output Methods
+  
+  @discardableResult
+  public func onDataLoaded(callback: @escaping (Int) -> Void) -> Self {
+    onDataLoadedCallback = callback
+    return self
+  }
+  
+  @discardableResult
+  public func onError(callback: @escaping (Error) -> Void) -> Self {
+    onErrorCallback = callback
+    return self
+  }
+  
   // MARK: - Load Methods
   
-  public func loadComputer(onSuccess success: @escaping () -> Void,
-                           onFailure failure: @escaping (_ error: Error) -> Void) {
+  private func loadOperationQueue() {
+    let loadComputerOperation = BlockOperation {
+      self.loadComputer()
+    }
+    let loadImageOperation = BlockOperation {
+      self.loadImage()
+    }
+    let loadSimilarItemsOperation = BlockOperation {
+      self.loadSimilarItems()
+    }
+    loadImageOperation.addDependency(loadComputerOperation)
+    loadSimilarItemsOperation.addDependency(loadComputerOperation)
+    
+    let operationQueue = OperationQueue()
+    operationQueue.addOperation(loadComputerOperation)
+    operationQueue.addOperation(loadImageOperation)
+    operationQueue.addOperation(loadSimilarItemsOperation)
+  }
+  
+  private func loadComputer() {
+    let group = DispatchGroup()
+    group.enter()
+    
     guard let computer = computerValue else { return }
     computerApi.getComputer(for: computer.id, onSuccess: { [weak self] computer in
       guard let self = self else { return }
       self.computerValue = computer
       
       DispatchQueue.main.async {
-        success()
+        self.onDataLoadedCallback?(ComputerTable.computer.row())
       }
-    }, onFailure: { error in
+      
+      group.leave()
+    }, onFailure: { [weak self] error in
       print("request error: \(error.localizedDescription)")
-      DispatchQueue.main.async {
-        failure(error)
-      }
+      DispatchQueue.main.async { self?.onErrorCallback?(error) }
+      
+      group.leave()
     })
+    
+    group.wait()
   }
   
-  public func loadSimilarItems(onSuccess success: @escaping () -> Void,
-                        onFailure failure: @escaping (_ error: Error) -> Void) {
-    guard let computer = computerValue else { return }
-    computerApi.getComputerSimilar(for: computer, onSuccess: { [weak self] similarItems in
-      guard let self = self else { return }
-      self.computerValue?.similarItems = similarItems
-      DispatchQueue.main.async {
-        success()
-      }
-    }, onFailure: { error in
-      print("request error: \(error.localizedDescription)")
-      DispatchQueue.main.async {
-        failure(error)
-      }
-    })
-  }
-  
-  public func loadImage(onSuccess success: @escaping () -> Void,
-                        onFailure failure: @escaping (_ error: Error) -> Void) {
+  private func loadImage() {
     // TODO Kingfisher
     guard let computer = computerValue else { return }
     computerApi.getImage(for: computer, onSuccess: { [weak self] imageData in
@@ -74,13 +106,25 @@ final class ComputerViewModel {
         let _ = UIImage(data: imageData) else { return }
       self.computerValue?.imageData = imageData
       DispatchQueue.main.async {
-        success()
+        self.onDataLoadedCallback?(ComputerTable.image.row())
       }
     }, onFailure: { error in
       print("request error: \(error.localizedDescription)")
+      //DispatchQueue.main.async { self?.onErrorCallback?(error) }
+    })
+  }
+  
+  private func loadSimilarItems() {
+    guard let computer = computerValue else { return }
+    computerApi.getComputerSimilar(for: computer, onSuccess: { [weak self] similarItems in
+      guard let self = self else { return }
+      self.computerValue?.similarItems = similarItems
       DispatchQueue.main.async {
-        failure(error)
+        self.onDataLoadedCallback?(ComputerTable.similarItems.row())
       }
+    }, onFailure: { error in
+      print("request error: \(error.localizedDescription)")
+      //DispatchQueue.main.async { self?.onErrorCallback?(error) }
     })
   }
   
@@ -90,7 +134,7 @@ final class ComputerViewModel {
 
 extension ComputerViewModel {
   
-  func configure(_ cell: ComputerDescriptionCell) {
+  public func configure(_ cell: ComputerDescriptionCell) {
     guard let computer = computerValue else { return }
     
     cell.selectionStyle = .none

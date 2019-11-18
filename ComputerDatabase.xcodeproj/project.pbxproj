@@ -16,6 +16,7 @@
 		921FE9CB237A0A6A006C0482 /* ComputerApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9CA237A0A6A006C0482 /* ComputerApi.swift */; };
 		921FE9CD237A0A7A006C0482 /* ComputerApiProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */; };
 		921FE9D1237A23E4006C0482 /* ComputerApiProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */; };
+		924A1620237F465800A168E8 /* ComputerTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924A161F237F465800A168E8 /* ComputerTable.swift */; };
 		9266AC9E2378A1B8002C87E0 /* UIAlertController+Show.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9266AC9D2378A1B8002C87E0 /* UIAlertController+Show.swift */; };
 		9269E7232374B216005E00F1 /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7222374B216005E00F1 /* DatabaseService.swift */; };
 		9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */; };
@@ -72,6 +73,7 @@
 		921FE9CA237A0A6A006C0482 /* ComputerApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApi.swift; sourceTree = "<group>"; };
 		921FE9CC237A0A7A006C0482 /* ComputerApiProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProtocol.swift; sourceTree = "<group>"; };
 		921FE9D0237A23E4006C0482 /* ComputerApiProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerApiProvider.swift; sourceTree = "<group>"; };
+		924A161F237F465800A168E8 /* ComputerTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComputerTable.swift; sourceTree = "<group>"; };
 		9266AC9D2378A1B8002C87E0 /* UIAlertController+Show.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+Show.swift"; sourceTree = "<group>"; };
 		9269E7222374B216005E00F1 /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		9269E7252374B256005E00F1 /* DatabaseServiceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseServiceProtocol.swift; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				92C021AB237382A00099C015 /* ComputerItemSimilar.swift */,
 				92C021A8237376660099C015 /* ComputerItemsPage.swift */,
 				92D1C1A6237AEFEF0029DBC5 /* ComputerJSON.swift */,
+				924A161F237F465800A168E8 /* ComputerTable.swift */,
 				92D1C1A8237AF0340029DBC5 /* UpdatedDate.swift */,
 			);
 			path = Models;
@@ -476,6 +479,7 @@
 				9269E7262374B256005E00F1 /* DatabaseServiceProtocol.swift in Sources */,
 				921FE9C9237A097A006C0482 /* ComputerNetworkApiProvider.swift in Sources */,
 				9291FE972371D31400963121 /* ComputersViewController.swift in Sources */,
+				924A1620237F465800A168E8 /* ComputerTable.swift in Sources */,
 				9291FE992371D31E00963121 /* ComputerViewController.swift in Sources */,
 				92C021AC237382A00099C015 /* ComputerItemSimilar.swift in Sources */,
 				9291FEA823720F8700963121 /* SimilarItemButton.swift in Sources */,
